@@ -41,7 +41,7 @@
             <mxRectangle width="30" height="90" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="U4Ox5Y5ZCVdUWK1vtRIg-12" value="email char(255) NOT NULL&#xa;&#xa;password char(255) NOT NULL&#xa;&#xa;role enum(&#39;USER&#39;, &#39;OWNER&#39;)" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;" vertex="1" parent="U4Ox5Y5ZCVdUWK1vtRIg-10">
+        <mxCell id="U4Ox5Y5ZCVdUWK1vtRIg-12" value="email varchar(255) NOT NULL&#xa;&#xa;password varchar(255) NOT NULL&#xa;&#xa;role enum(&#39;USER&#39;, &#39;OWNER&#39;)" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;" vertex="1" parent="U4Ox5Y5ZCVdUWK1vtRIg-10">
           <mxGeometry x="30" width="180" height="90" as="geometry">
             <mxRectangle width="180" height="90" as="alternateBounds" />
           </mxGeometry>
@@ -83,7 +83,7 @@
             <mxRectangle width="30" height="90" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="U4Ox5Y5ZCVdUWK1vtRIg-22" value="name char(255) NOT NULL&#xa;price double NOT NULL&#xa;isDeleted Boolean" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;" vertex="1" parent="U4Ox5Y5ZCVdUWK1vtRIg-20">
+        <mxCell id="U4Ox5Y5ZCVdUWK1vtRIg-22" value="name varchar(255) NOT NULL&#xa;price double NOT NULL&#xa;is_deleted Boolean" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;" vertex="1" parent="U4Ox5Y5ZCVdUWK1vtRIg-20">
           <mxGeometry x="30" width="180" height="90" as="geometry">
             <mxRectangle width="180" height="90" as="alternateBounds" />
           </mxGeometry>
@@ -112,7 +112,7 @@
             <mxRectangle width="30" height="160" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="U4Ox5Y5ZCVdUWK1vtRIg-29" value="name char(255) NOT NULL&#xa;&#xa;openingTime LocalDateTime&#xa;&#xa;closingTime LocalDateTime&#xa;&#xa;minimumOrderAmount Double&#xa;&#xa;isClosed Boolean" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;" vertex="1" parent="U4Ox5Y5ZCVdUWK1vtRIg-27">
+        <mxCell id="U4Ox5Y5ZCVdUWK1vtRIg-29" value="name varchar(255) NOT NULL&#xa;&#xa;opening_time LocalDateTime&#xa;&#xa;closing_time LocalDateTime&#xa;&#xa;min_order Double&#xa;&#xa;is_closed Boolean" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;" vertex="1" parent="U4Ox5Y5ZCVdUWK1vtRIg-27">
           <mxGeometry x="30" width="190" height="160" as="geometry">
             <mxRectangle width="190" height="160" as="alternateBounds" />
           </mxGeometry>
@@ -154,7 +154,7 @@
             <mxRectangle width="30" height="90" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="U4Ox5Y5ZCVdUWK1vtRIg-39" value="totalAmount double NOT NULL&#xa;orderTime LocalDateTime &#xa;status char(255) " style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;" vertex="1" parent="U4Ox5Y5ZCVdUWK1vtRIg-37">
+        <mxCell id="U4Ox5Y5ZCVdUWK1vtRIg-39" value="total_amount double NOT NULL&#xa;order_time LocalDateTime &#xa;status varchar(255) " style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;" vertex="1" parent="U4Ox5Y5ZCVdUWK1vtRIg-37">
           <mxGeometry x="30" width="180" height="90" as="geometry">
             <mxRectangle width="180" height="90" as="alternateBounds" />
           </mxGeometry>
@@ -196,12 +196,12 @@
             <mxRectangle width="30" height="90" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="U4Ox5Y5ZCVdUWK1vtRIg-49" value="rating int&#xa;comment char(255)" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;" vertex="1" parent="U4Ox5Y5ZCVdUWK1vtRIg-47">
+        <mxCell id="U4Ox5Y5ZCVdUWK1vtRIg-49" value="rating int&#xa;comment varchar(255)" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;" vertex="1" parent="U4Ox5Y5ZCVdUWK1vtRIg-47">
           <mxGeometry x="30" width="180" height="90" as="geometry">
             <mxRectangle width="180" height="90" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="U4Ox5Y5ZCVdUWK1vtRIg-52" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERzeroToMany;startArrow=ERmandOne;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="U4Ox5Y5ZCVdUWK1vtRIg-7" target="U4Ox5Y5ZCVdUWK1vtRIg-24">
+        <mxCell id="U4Ox5Y5ZCVdUWK1vtRIg-52" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERzeroToMany;startArrow=ERmandOne;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="U4Ox5Y5ZCVdUWK1vtRIg-7" target="U4Ox5Y5ZCVdUWK1vtRIg-24">
           <mxGeometry width="100" height="100" relative="1" as="geometry">
             <mxPoint x="370" y="400" as="sourcePoint" />
             <mxPoint x="470" y="300" as="targetPoint" />
