@@ -41,8 +41,10 @@ public class JwtUtil {
 
     /**
      * JWT 생성
-     * @param name : 사용자명
+     * @param userId : 사용자 고유 식별자
      * @param email : 사용자 이메일
+     * @param username : 사용자명
+     * @param role : 사용자 권한
      * @return JWT 토큰
      */
     public String createToken(Long userId, String email, String username, UserRole role) throws UnsupportedEncodingException {

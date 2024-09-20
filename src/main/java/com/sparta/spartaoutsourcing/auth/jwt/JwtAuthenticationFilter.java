@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.spartaoutsourcing.auth.security.UserDetailsImpl;
 import com.sparta.spartaoutsourcing.user.dto.request.UserLoginRequestDto;
 import com.sparta.spartaoutsourcing.user.enums.UserRole;
+import com.sparta.spartaoutsourcing.user.exception.UserException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 
 @Slf4j(topic = "로그인 및 JWT 생성")
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -28,6 +30,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         log.info("로그인 시도");
+        String token = request.getHeader(JwtUtil.AUTHORIZATION_HEADER);
+
+        if (token != null) {
+            throw new RuntimeException("이미 로그인 되어 있습니다.", new AccessDeniedException("로그아웃 후에 로그인 시도를 해 주십시오."));
+        }
 
         try {
                 UserLoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), UserLoginRequestDto.class);
