@@ -1,0 +1,68 @@
+* {
+    font-family: 'Georgia', serif;
+}
+
+body {
+    margin: 0px;
+}
+
+button {
+    color: white;
+    border-radius: 4px;
+    border-radius: none;
+}
+
+#login-form {
+    width: 538px;
+    height: 710px;
+    margin: 70px auto 141px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    /*gap: 96px;*/
+    padding: 56px 0 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+}
+
+#login-title {
+    width: 303px;
+    height: 32px;
+    /*margin: 56px auto auto auto;*/
+    flex-grow: 0;
+    font-family: SpoqaHanSansNeo;
+    font-size: 32px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: -0.96px;
+    text-align: center;
+    color: #212529;
+}
+
+#login-kakao-btn {
+    border-width: 0;
+    margin: 96px 0 8px;
+    width: 393px;
+    height: 62px;
+    flex-grow: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    /*margin: 0 0 8px;*/
+    padding: 11px 12px;
+    border-radius: 5px;
+    background-color: #ffd43b;
+
+    font-family: SpoqaHanSansNeo;
+    font-size: 20px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    color: #414141;
+}

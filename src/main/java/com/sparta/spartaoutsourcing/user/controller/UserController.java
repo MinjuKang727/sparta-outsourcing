@@ -1,5 +1,6 @@
 package com.sparta.spartaoutsourcing.user.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.spartaoutsourcing.auth.jwt.JwtUtil;
 import com.sparta.spartaoutsourcing.auth.security.UserDetailsImpl;
 import com.sparta.spartaoutsourcing.auth.token.TokenBlacklistService;
@@ -7,26 +8,36 @@ import com.sparta.spartaoutsourcing.user.dto.request.UserDeleteRequestDto;
 import com.sparta.spartaoutsourcing.user.dto.request.UserSignupRequestDto;
 import com.sparta.spartaoutsourcing.user.dto.response.UserResponseDto;
 import com.sparta.spartaoutsourcing.user.exception.UserException;
+import com.sparta.spartaoutsourcing.user.service.KakaoService;
 import com.sparta.spartaoutsourcing.user.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.file.AccessDeniedException;
 
 @Slf4j(topic = "UserController")
 @Validated
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final KakaoService kakaoService;
     private final TokenBlacklistService tokenBlacklistService;
+
+    @GetMapping("/users/login-page")
+    public String loginPage() {
+        return "login";
+    }
 
 
     /**
@@ -36,17 +47,18 @@ public class UserController {
      */
     @PostMapping("/users/signup")
     public ResponseEntity<UserResponseDto> signup(@RequestHeader(value = JwtUtil.AUTHORIZATION_HEADER, required = false) String token, @RequestBody @Valid UserSignupRequestDto requestDto) throws UserException {
-        log.info(":::회원 가입:::");
+        log.info("::: 회원 가입 :::");
+
+        if (token != null) {
+            throw new UserException("회원 가입 실패", new AccessDeniedException("로그아웃 후에 회원 가입 해 주십시오."));
+        }
+
         try {
             UserResponseDto responseDto = this.userService.signup(requestDto);
             String bearerToken = this.userService.createToken(responseDto);
 
-            if (token != null) {
-                this.tokenBlacklistService.addTokenToBlackList(token);
-            }
-
             return ResponseEntity.status(HttpStatus.OK).header(JwtUtil.AUTHORIZATION_HEADER, bearerToken).body(responseDto);
-        } catch (UnsupportedEncodingException | ServletException e) {
+        } catch (UnsupportedEncodingException e) {
             log.error("토큰 생성 에러 : {}", e.getMessage());
 
             throw new UserException("토큰 생성 실패", e);
@@ -61,7 +73,7 @@ public class UserController {
      */
     @DeleteMapping("/users")
     public ResponseEntity<String> deleteUser(@RequestHeader(JwtUtil.AUTHORIZATION_HEADER) String token, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody @Valid UserDeleteRequestDto requestDto) throws UserException, ServletException {
-        log.info(":::회원 탈퇴:::");
+        log.info("::: 회원 탈퇴 :::");
         this.userService.deleteUser(userDetails.getUser(), requestDto);
 
         this.tokenBlacklistService.addTokenToBlackList(token);
@@ -69,4 +81,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("회원 탈퇴 성공");
     }
 
+    @GetMapping("/users/kakao/callback")
+    public ResponseEntity<UserResponseDto> kakaoLogin(@RequestParam String code) throws JsonProcessingException, UnsupportedEncodingException {
+        log.info("::: 카카오 로그인 :::");
+        UserResponseDto responseDto = this.kakaoService.kakaoLogin(code);
+        String bearerToken = this.userService.createToken(responseDto);
+
+        return ResponseEntity.status(HttpStatus.OK).header(JwtUtil.AUTHORIZATION_HEADER, bearerToken).body(responseDto);
+    }
 }
