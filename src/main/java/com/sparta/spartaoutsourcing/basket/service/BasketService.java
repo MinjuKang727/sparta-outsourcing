@@ -2,6 +2,7 @@ package com.sparta.spartaoutsourcing.basket.service;
 
 
 import com.sparta.spartaoutsourcing.basket.dto.BasketRequestDto;
+import com.sparta.spartaoutsourcing.basket.dto.BasketResponseDto;
 import com.sparta.spartaoutsourcing.basket.entity.Basket;
 import com.sparta.spartaoutsourcing.basket.repository.BasketRepository;
 import com.sparta.spartaoutsourcing.menu.entity.Menu;
@@ -12,7 +13,9 @@ import com.sparta.spartaoutsourcing.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -50,6 +53,35 @@ public class BasketService {
         Basket basketSaved = new Basket(user, menu, store, dto.getQuantity());
         basketRepository.save(basketSaved);
 
+    }
+
+    @Transactional
+    public void updateBasket(User user, Long menuId, BasketRequestDto dto) {
+
+        basketRepository.deleteByUserId(user.getId());
+
+        Menu menu = menuRepository.findById(menuId).orElseThrow(() -> new NullPointerException("해당 메뉴가 존재하지 않습니다."));
+        Store store = menu.getStore();
+
+        Basket basketSaved = new Basket(user, menu, store, dto.getQuantity());
+        basketRepository.save(basketSaved);
+
+    }
+
+    public List<BasketResponseDto> getBasket(User user) {
+        List<Basket> basketList = basketRepository.findByUserId(user.getId());
+
+        List<BasketResponseDto> basketResponseDtoList = new ArrayList<>();
+
+        for (Basket basket : basketList) {
+            BasketResponseDto basketResponseDto = new BasketResponseDto(basket);
+            basketResponseDtoList.add(basketResponseDto);
+        }
+        return basketResponseDtoList;
+    }
+
+    public void deleteBasket(User user) {
+        basketRepository.deleteByUserId(user.getId());
     }
 }
 

@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface BasketRepository extends JpaRepository<Basket, Long> {
     List<Basket> findByUserId(Long userId);
+
+    void deleteByUserId(Long id);
 }
 
 
