@@ -1,6 +1,7 @@
 package com.sparta.spartaoutsourcing.domain.review.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,11 +12,18 @@ import lombok.NoArgsConstructor;
 public class ReviewComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     Long id;
 
-    @OneToOne(optional = false, mappedBy = "review_comment")
+    @OneToOne(optional = false, mappedBy = "reviewComment")
     Review review;
 
     @Column(nullable = false)
     String content;
+
+    @Builder
+    private ReviewComment(Review review, String content) {
+        this.review = review;
+        this.content = content;
+    }
 }

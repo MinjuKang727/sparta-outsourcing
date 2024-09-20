@@ -21,7 +21,7 @@ public class Review {
     String content;
 
     @OneToOne(optional = true)
-    @JoinColumn
+    @JoinColumn(name = "reviewCommentId")
     ReviewComment reviewComment;
 
     @Builder
