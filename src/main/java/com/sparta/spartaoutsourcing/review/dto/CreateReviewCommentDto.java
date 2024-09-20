@@ -1,4 +1,4 @@
-package com.sparta.spartaoutsourcing.domain.review.dto;
+package com.sparta.spartaoutsourcing.review.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;

@@ -1,7 +1,7 @@
-package com.sparta.spartaoutsourcing.domain.review.service;
+package com.sparta.spartaoutsourcing.review.service;
 
-import com.sparta.spartaoutsourcing.domain.review.entity.Review;
-import com.sparta.spartaoutsourcing.domain.review.repository.ReviewRepository;
+import com.sparta.spartaoutsourcing.review.entity.Review;
+import com.sparta.spartaoutsourcing.review.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

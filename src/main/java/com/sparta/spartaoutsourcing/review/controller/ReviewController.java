@@ -1,12 +1,12 @@
-package com.sparta.spartaoutsourcing.domain.review.controller;
+package com.sparta.spartaoutsourcing.review.controller;
 
-import com.sparta.spartaoutsourcing.domain.review.dto.CreateReviewCommentDto;
-import com.sparta.spartaoutsourcing.domain.review.dto.CreateReviewRequestDto;
-import com.sparta.spartaoutsourcing.domain.review.dto.ReviewResponseDto;
-import com.sparta.spartaoutsourcing.domain.review.entity.Review;
-import com.sparta.spartaoutsourcing.domain.review.entity.ReviewComment;
-import com.sparta.spartaoutsourcing.domain.review.service.ReviewCommentService;
-import com.sparta.spartaoutsourcing.domain.review.service.ReviewService;
+import com.sparta.spartaoutsourcing.review.dto.CreateReviewCommentDto;
+import com.sparta.spartaoutsourcing.review.dto.CreateReviewRequestDto;
+import com.sparta.spartaoutsourcing.review.dto.ReviewResponseDto;
+import com.sparta.spartaoutsourcing.review.entity.Review;
+import com.sparta.spartaoutsourcing.review.entity.ReviewComment;
+import com.sparta.spartaoutsourcing.review.service.ReviewCommentService;
+import com.sparta.spartaoutsourcing.review.service.ReviewService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

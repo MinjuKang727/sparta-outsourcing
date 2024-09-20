@@ -1,4 +1,4 @@
-package com.sparta.spartaoutsourcing.domain.review.entity;
+package com.sparta.spartaoutsourcing.review.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;
