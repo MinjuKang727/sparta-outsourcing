@@ -1,6 +1,6 @@
-package com.sparta.spartaoutsourcing.auth.token;
+package com.sparta.spartaoutsourcing.domian.auth.token;
 
-import com.sparta.spartaoutsourcing.auth.jwt.JwtUtil;
+import com.sparta.spartaoutsourcing.domian.auth.jwt.JwtUtil;
 import jakarta.servlet.ServletException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

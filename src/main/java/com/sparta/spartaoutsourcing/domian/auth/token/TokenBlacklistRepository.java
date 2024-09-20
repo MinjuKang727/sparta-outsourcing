@@ -1,4 +1,4 @@
-package com.sparta.spartaoutsourcing.auth.token;
+package com.sparta.spartaoutsourcing.domian.auth.token;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

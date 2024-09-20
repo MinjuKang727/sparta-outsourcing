@@ -20,6 +20,7 @@ public class StoreResponseDto {
 
 
 
+
     public StoreResponseDto(Store store) {
         this.id = store.getId();
         this.storeName = store.getStoreName();

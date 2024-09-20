@@ -1,7 +1,7 @@
-package com.sparta.spartaoutsourcing.auth.jwt;
+package com.sparta.spartaoutsourcing.domian.auth.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.spartaoutsourcing.auth.security.UserDetailsImpl;
+import com.sparta.spartaoutsourcing.domian.auth.security.UserDetailsImpl;
 import com.sparta.spartaoutsourcing.user.dto.request.UserLoginRequestDto;
 import com.sparta.spartaoutsourcing.user.enums.UserRole;
 import jakarta.servlet.FilterChain;

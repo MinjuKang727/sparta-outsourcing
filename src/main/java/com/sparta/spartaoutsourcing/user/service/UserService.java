@@ -1,6 +1,6 @@
 package com.sparta.spartaoutsourcing.user.service;
 
-import com.sparta.spartaoutsourcing.auth.jwt.JwtUtil;
+import com.sparta.spartaoutsourcing.domian.auth.jwt.JwtUtil;
 import com.sparta.spartaoutsourcing.user.exception.UserException;
 import com.sparta.spartaoutsourcing.user.dto.request.UserDeleteRequestDto;
 import com.sparta.spartaoutsourcing.user.dto.request.UserSignupRequestDto;

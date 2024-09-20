@@ -1,4 +1,4 @@
-package com.sparta.spartaoutsourcing.auth.jwt;
+package com.sparta.spartaoutsourcing.domian.auth.jwt;
 
 import com.sparta.spartaoutsourcing.user.enums.UserRole;
 import io.jsonwebtoken.*;

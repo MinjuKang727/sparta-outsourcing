@@ -1,18 +1,22 @@
 package com.sparta.spartaoutsourcing.domian.store.repository;
 
 import com.sparta.spartaoutsourcing.domian.store.entity.Store;
+import com.sparta.spartaoutsourcing.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface StoreRepository extends JpaRepository<Store, Long> {
 
-    Store findByOpenTimeAndCloseTime(LocalTime openTime, LocalTime closeTime);
+    Optional<Store> findByUsersIdAndId(Long userId, Long storeId);
 
-    boolean findByMinOrderPrice(String minOrderPrice);
+    @Query("select s from Store s where s.isClose = false and s.storeName like concat('%', ?1, '%')")
+    List<Store> findByIsCloseFalseAndStoreNameContaining(String storeName);
 
-    Optional<Store> findByStoreName(String storeName);
+    @Query("select count(s) from Store s where s.isClose = false")
+    Long countStoreByIsCloseFalse(User user);
 }

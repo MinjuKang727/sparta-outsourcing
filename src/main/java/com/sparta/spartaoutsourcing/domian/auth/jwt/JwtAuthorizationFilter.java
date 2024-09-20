@@ -1,8 +1,8 @@
-package com.sparta.spartaoutsourcing.auth.jwt;
+package com.sparta.spartaoutsourcing.domian.auth.jwt;
 
 
-import com.sparta.spartaoutsourcing.auth.security.UserDetailsServiceImpl;
-import com.sparta.spartaoutsourcing.auth.token.TokenBlacklistService;
+import com.sparta.spartaoutsourcing.domian.auth.security.UserDetailsServiceImpl;
+import com.sparta.spartaoutsourcing.domian.auth.token.TokenBlacklistService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

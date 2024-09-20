@@ -1,8 +1,8 @@
 package com.sparta.spartaoutsourcing.user.controller;
 
-import com.sparta.spartaoutsourcing.auth.jwt.JwtUtil;
-import com.sparta.spartaoutsourcing.auth.security.UserDetailsImpl;
-import com.sparta.spartaoutsourcing.auth.token.TokenBlacklistService;
+import com.sparta.spartaoutsourcing.domian.auth.jwt.JwtUtil;
+import com.sparta.spartaoutsourcing.domian.auth.security.UserDetailsImpl;
+import com.sparta.spartaoutsourcing.domian.auth.token.TokenBlacklistService;
 import com.sparta.spartaoutsourcing.user.dto.request.UserDeleteRequestDto;
 import com.sparta.spartaoutsourcing.user.dto.request.UserSignupRequestDto;
 import com.sparta.spartaoutsourcing.user.dto.response.UserResponseDto;

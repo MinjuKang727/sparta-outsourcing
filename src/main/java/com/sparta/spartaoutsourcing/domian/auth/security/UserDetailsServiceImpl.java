@@ -1,4 +1,4 @@
-package com.sparta.spartaoutsourcing.auth.security;
+package com.sparta.spartaoutsourcing.domian.auth.security;
 
 import com.sparta.spartaoutsourcing.user.entity.User;
 import com.sparta.spartaoutsourcing.user.repository.UserRepository;

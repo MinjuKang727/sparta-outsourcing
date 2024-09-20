@@ -1,11 +1,11 @@
-package com.sparta.spartaoutsourcing.auth.config;
+package com.sparta.spartaoutsourcing.domian.auth.config;
 
-import com.sparta.spartaoutsourcing.auth.UserLogoutHandler;
-import com.sparta.spartaoutsourcing.auth.jwt.JwtAuthenticationFilter;
-import com.sparta.spartaoutsourcing.auth.jwt.JwtAuthorizationFilter;
-import com.sparta.spartaoutsourcing.auth.jwt.JwtUtil;
-import com.sparta.spartaoutsourcing.auth.security.UserDetailsServiceImpl;
-import com.sparta.spartaoutsourcing.auth.token.TokenBlacklistService;
+import com.sparta.spartaoutsourcing.domian.auth.UserLogoutHandler;
+import com.sparta.spartaoutsourcing.domian.auth.jwt.JwtAuthenticationFilter;
+import com.sparta.spartaoutsourcing.domian.auth.jwt.JwtAuthorizationFilter;
+import com.sparta.spartaoutsourcing.domian.auth.jwt.JwtUtil;
+import com.sparta.spartaoutsourcing.domian.auth.security.UserDetailsServiceImpl;
+import com.sparta.spartaoutsourcing.domian.auth.token.TokenBlacklistService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

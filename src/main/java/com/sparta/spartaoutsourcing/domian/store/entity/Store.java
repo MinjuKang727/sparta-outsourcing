@@ -1,19 +1,18 @@
 package com.sparta.spartaoutsourcing.domian.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sparta.spartaoutsourcing.domian.store.dto.StoreRequestDto;
+import com.sparta.spartaoutsourcing.user.entity.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "store")
 public class Store {
@@ -36,20 +35,23 @@ public class Store {
     private String minOrderPrice;
 
     @Column(name = "is_close",nullable = false)
-    private boolean isClose = true;
+    private boolean isClose = false;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private User users;
 
 
     public Store(StoreRequestDto storeRequestDto) {
-
         this.storeName = storeRequestDto.getStoreName();
         this.openTime = storeRequestDto.getOpenTime();
         this.closeTime = storeRequestDto.getCloseTime();
         this.minOrderPrice = storeRequestDto.getMinOrderPrice();
     }
+
+
+
     public void update(String storeName,LocalTime openTime,LocalTime closeTime,String minOrderPrice) {
         this.storeName = storeName;
         this.openTime = openTime;
@@ -58,7 +60,7 @@ public class Store {
     }
 
     public void activateStore(){
-        this.isClose = false;
+        this.isClose = true;
     }
 
 }

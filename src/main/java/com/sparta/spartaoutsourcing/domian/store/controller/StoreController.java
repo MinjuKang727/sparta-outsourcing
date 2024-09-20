@@ -20,33 +20,33 @@ public class StoreController {
     private final StoreService storeService;
 
 //    가게 생성
-    @PostMapping
-    public ResponseEntity<StoreResponseDto> create(@RequestBody StoreRequestDto storeRequestDto) {
-        return ResponseEntity.ok(storeService.createStore(storeRequestDto));
+    @PostMapping("/{userId}")
+    public ResponseEntity<StoreResponseDto> create(@PathVariable("userId") Long userId, @RequestBody StoreRequestDto storeRequestDto) {
+        return ResponseEntity.ok(storeService.createStore(userId,storeRequestDto));
     }
 
 //    가게 단건 조회
-    @GetMapping("/{userId}/{storeId}")
-    public ResponseEntity<Store> getStore(@PathVariable Long userId, @PathVariable Long storeId) {
-        return ResponseEntity.ok(storeService.getStore(userId,storeId));
+    @GetMapping("/{storeId}")
+    public ResponseEntity<Store> getStore( @PathVariable("storeId") Long storeId) {
+        return ResponseEntity.ok(storeService.getStore(storeId));
     }
 
 //    가게 목록 조회
     @GetMapping("/name/{storeName}")
-    public ResponseEntity<List<StoreResponseDto>> findAllStores(@PathVariable String storeName) {
+    public ResponseEntity<List<StoreResponseDto>> findAllStores(@PathVariable("storeName") String storeName) {
         return ResponseEntity.ok(storeService.findAllStores(storeName));
     }
 
 //    가게 수정
     @PutMapping("/{userId}/{storeId}")
-    public ResponseEntity<Store>update(@PathVariable Long userId, @PathVariable Long storeId, @RequestBody StoreRequestDto storeRequestDto) throws AccessDeniedException {
+    public ResponseEntity<Store>update(@PathVariable("userId") Long userId, @PathVariable("storeId") Long storeId, @RequestBody StoreRequestDto storeRequestDto) throws AccessDeniedException {
         return ResponseEntity.ok(storeService.updateStore(userId,storeId,storeRequestDto));
 
     }
 //    가게 삭제
     @DeleteMapping("/{userId}/{storeId}")
-    public ResponseEntity<String> delete(@PathVariable Long userId, @PathVariable Long storeId) throws AccessDeniedException {
-        return ResponseEntity.ok(storeService.storeDelete(userId,storeId));
+    public ResponseEntity<String> delete(@PathVariable("userId") Long userId, @PathVariable("storeId") Long storeId) throws AccessDeniedException {
+        return ResponseEntity.ok(storeService.storeClose(userId,storeId));
     }
 
 }

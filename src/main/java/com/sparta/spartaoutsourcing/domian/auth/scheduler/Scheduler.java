@@ -1,6 +1,6 @@
-package com.sparta.spartaoutsourcing.auth.scheduler;
+package com.sparta.spartaoutsourcing.domian.auth.scheduler;
 
-import com.sparta.spartaoutsourcing.auth.token.TokenBlacklistRepository;
+import com.sparta.spartaoutsourcing.domian.auth.token.TokenBlacklistRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

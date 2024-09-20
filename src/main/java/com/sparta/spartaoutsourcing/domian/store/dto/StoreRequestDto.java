@@ -15,6 +15,4 @@ public class StoreRequestDto {
 
     private String minOrderPrice;
 
-
-
 }
