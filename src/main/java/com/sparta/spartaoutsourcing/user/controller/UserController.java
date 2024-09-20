@@ -47,7 +47,7 @@ public class UserController {
      */
     @PostMapping("/users/signup")
     public ResponseEntity<UserResponseDto> signup(@RequestHeader(value = JwtUtil.AUTHORIZATION_HEADER, required = false) String token, @RequestBody @Valid UserSignupRequestDto requestDto) throws UserException {
-        log.info(":::회원 가입:::");
+        log.info("::: 회원 가입 :::");
 
         if (token != null) {
             throw new UserException("회원 가입 실패", new AccessDeniedException("로그아웃 후에 회원 가입 해 주십시오."));
@@ -73,7 +73,7 @@ public class UserController {
      */
     @DeleteMapping("/users")
     public ResponseEntity<String> deleteUser(@RequestHeader(JwtUtil.AUTHORIZATION_HEADER) String token, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody @Valid UserDeleteRequestDto requestDto) throws UserException, ServletException {
-        log.info(":::회원 탈퇴:::");
+        log.info("::: 회원 탈퇴 :::");
         this.userService.deleteUser(userDetails.getUser(), requestDto);
 
         this.tokenBlacklistService.addTokenToBlackList(token);
@@ -81,8 +81,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("회원 탈퇴 성공");
     }
 
-    @PostMapping("/users/kakao/callback")
+    @GetMapping("/users/kakao/callback")
     public ResponseEntity<UserResponseDto> kakaoLogin(@RequestParam String code) throws JsonProcessingException, UnsupportedEncodingException {
+        log.info("::: 카카오 로그인 :::");
         UserResponseDto responseDto = this.kakaoService.kakaoLogin(code);
         String bearerToken = this.userService.createToken(responseDto);
 

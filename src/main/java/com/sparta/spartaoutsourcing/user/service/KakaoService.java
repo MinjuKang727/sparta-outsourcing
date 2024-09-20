@@ -3,7 +3,6 @@ package com.sparta.spartaoutsourcing.user.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.spartaoutsourcing.auth.jwt.JwtUtil;
 import com.sparta.spartaoutsourcing.user.dto.request.KakaoUserInfoDto;
 import com.sparta.spartaoutsourcing.user.dto.response.UserResponseDto;
 import com.sparta.spartaoutsourcing.user.entity.User;
@@ -22,7 +21,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.UUID;
 
@@ -34,12 +32,12 @@ public class KakaoService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
-    private final JwtUtil jwtUtil;
 
     @Value("${rest.api.key}")
     private String clientId;
 
     public UserResponseDto kakaoLogin(String code) throws JsonProcessingException {
+        log.info("kakaoLogin() 메서드 실행");
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getToken(code);
 
@@ -52,9 +50,15 @@ public class KakaoService {
         return new UserResponseDto(kakaoUser);
     }
 
-    // 인증 코드로 토큰 요청하기
+
+    /**
+     * 인가 코드로 토큰 요청
+     * @param code : 인가 코드
+     * @return : 엑세스 토큰 문자열
+     * @throws JsonProcessingException : ObjectMapper로 액세스 토큰 파싱 시, 발생할 수 있음
+     */
     private String getToken(String code) throws JsonProcessingException {
-        log.info("인가코드 : {}", code);
+        log.info("getToken() 메서드 실행");
         // 요청 URL 만들기
         URI uri = UriComponentsBuilder
                 .fromUriString("https://kauth.kakao.com")
@@ -90,8 +94,14 @@ public class KakaoService {
         return jsonNode.get("access_token").asText();
     }
 
+    /**
+     * 토큰으로 카카오 API 호출 : "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
+     * @param accessToken : 엑세스 토큰
+     * @return : 사용자 정보를 담은 KakaoUserInfoDto 객체
+     * @throws JsonProcessingException ObjectMapper로 사용자 정보 파싱 시, 발생할 수 있음
+     */
     private KakaoUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
-        log.info("엑세스 토큰 : {}", accessToken);
+        log.info("getKakaoUserInfo() 메서드 실행");
         // 요청 URL 만들기
         URI uri = UriComponentsBuilder
                 .fromUriString("https://kapi.kakao.com")
@@ -123,11 +133,16 @@ public class KakaoService {
         String email = jsonNode.get("kakao_account")
                 .get("email").asText();
 
-        log.info("카카오 사용자 정보: " + id + ", " + nickname + ", " + email);
         return new KakaoUserInfoDto(id, nickname, email);
     }
 
+    /**
+     * 필요시에 회원가입 혹은 회원 정보 업데이트
+     * @param kakaoUserInfo : 회원 정보가 들어 있는 Dto 객체
+     * @return User Entity
+     */
     private User registerKakaoUserIfNeeded(KakaoUserInfoDto kakaoUserInfo) {
+        log.info("registerKakaoUserIfNeeded() 메서드 실행");
         // DB 에 중복된 Kakao Id 가 있는지 확인
         Long kakaoId = kakaoUserInfo.getId();
         User kakaoUser = this.userRepository.findByKakaoId(kakaoId).orElse(null);

@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        log.info("로그인 시도");
+        log.info("::: 로그인 :::");
         String token = request.getHeader(JwtUtil.AUTHORIZATION_HEADER);
 
         if (token != null) {
