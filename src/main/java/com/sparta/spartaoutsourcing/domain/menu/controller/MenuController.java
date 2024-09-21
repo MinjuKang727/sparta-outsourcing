@@ -1,8 +1,6 @@
 package com.sparta.spartaoutsourcing.domain.menu.controller;
 
 import com.sparta.spartaoutsourcing.domain.menu.dto.request.MenuRequestDto;
-import com.sparta.spartaoutsourcing.domain.menu.dto.response.MenuResponseDto;
-import com.sparta.spartaoutsourcing.domain.menu.dto.response.SuccessResponseDto;
 import com.sparta.spartaoutsourcing.domain.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,21 +21,15 @@ public class MenuController {
     public ResponseEntity<?> createMenu(@PathVariable Long store_id, @RequestBody MenuRequestDto menuRequestDto) {
         log.info(":::메뉴 생성:::");
 
-        MenuResponseDto createdMenu = menuService.createMenu(store_id, menuRequestDto);
-        SuccessResponseDto response = new SuccessResponseDto("메뉴 생성 완료", createdMenu);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(menuService.createMenu(store_id, menuRequestDto));
     }
 
     // 메뉴 수정
     @PutMapping("/{store_id}/menus/{menu_id}")
     public ResponseEntity<?> updateMenu(@PathVariable Long store_id, @PathVariable Long menu_id, @RequestBody MenuRequestDto menuRequestDto) {
         log.info(":::메뉴 수정:::");
-        
-        MenuResponseDto updateMenu = menuService.updateMenu(store_id, menu_id, menuRequestDto);
-        SuccessResponseDto response = new SuccessResponseDto("메뉴 수정 완료", updateMenu);
 
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok().body(menuService.updateMenu(store_id, menu_id, menuRequestDto));
     }
 
     // 메뉴 삭제
@@ -48,5 +40,15 @@ public class MenuController {
         menuService.deleteMenu(store_id, menu_id); // 예외가 발생하지 않으면 성공
 
         return ResponseEntity.ok().body("메뉴 삭제 성공");
+    }
+
+    // 메뉴 복원
+    @PutMapping("/{store_id}/menus/{menu_id}/restore")
+    public ResponseEntity<?> restoreMenu(@PathVariable Long store_id, @PathVariable Long menu_id) {
+        log.info(":::메뉴 복원:::");
+
+        menuService.updateMenu(store_id, menu_id);
+
+        return ResponseEntity.ok().body("메뉴 복원 성공");
     }
 }
