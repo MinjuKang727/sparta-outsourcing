@@ -50,7 +50,7 @@ public class UserService {
         UserRole role = UserRole.USER;
         if(requestDto.getIsOwner()) {
             if (!ObjectUtils.nullSafeEquals(ownerKey,requestDto.getOwnerKey())) {
-                throw new UserException("회원 가입 실패", new IllegalArgumentException("잘못된 사장님 토큰값을 입력하셨습니다."));
+                throw new UserException("회원 가입 실패", new IllegalArgumentException("사장님 권한 인가 키를 잘못 입력하셨습니다."));
             }
             role = UserRole.OWNER;
         }
@@ -83,6 +83,12 @@ public class UserService {
         return deletedUser.getIsDeleted();
     }
 
+    /**
+     * JWT 토큰 생성 메서드
+     * @param responseDto : User 정보를 담은 객체
+     * @return JWT 토큰 문자열
+     * @throws UnsupportedEncodingException : 토큰 생성 중 발생
+     */
     public String createToken(UserResponseDto responseDto) throws UnsupportedEncodingException {
         log.info("createToken() 메서드 실행");
         return jwtUtil.createToken(responseDto.getId(), responseDto.getEmail(), responseDto.getUsername(), responseDto.getRole());

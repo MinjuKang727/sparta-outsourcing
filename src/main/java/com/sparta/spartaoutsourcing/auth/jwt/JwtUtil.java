@@ -19,7 +19,6 @@ import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
-@Slf4j(topic = "JwtUtil")
 @Component
 public class JwtUtil {
     public static final String AUTHORIZATION_HEADER = "Authorization";
@@ -105,8 +104,6 @@ public class JwtUtil {
 
 
     public String getDecodedToken(String bearerToken) throws ServletException {
-        log.trace("getDecodedToken() 메서드 실행");
-
         if (bearerToken != null) {
             try {
                 return URLDecoder.decode(bearerToken, "UTF-8");

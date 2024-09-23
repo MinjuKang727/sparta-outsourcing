@@ -48,8 +48,6 @@ public class KakaoService {
                 .build()
                 .toString();
 
-        log.info("Redirect URL : {}", kakaoAuthUrl);
-
         return new RedirectView(kakaoAuthUrl);
     }
 
