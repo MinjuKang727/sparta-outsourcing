@@ -68,6 +68,7 @@ public class BasketService {
 
     }
 
+    // 장바구니 조회
     public List<BasketResponseDto> getBasket(User user) {
         List<Basket> basketList = basketRepository.findByUserId(user.getId());
 
@@ -80,6 +81,8 @@ public class BasketService {
         return basketResponseDtoList;
     }
 
+    // 장바구니 삭제
+    @Transactional
     public void deleteBasket(User user) {
         basketRepository.deleteByUserId(user.getId());
     }
