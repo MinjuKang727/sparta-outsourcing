@@ -12,11 +12,11 @@ public class BasketResponseDto {
     private final String storeName;
     private final String menuName;
     private final int quantity;
-    private final int totalPrice;
+    private final Long totalPrice;
 
     public BasketResponseDto(Basket basket) {
-        this.storeName = basket.getStore().getName();
-        this.menuName = basket.getMenu().getMenuName();
+        this.storeName = basket.getStore().getStoreName();
+        this.menuName = basket.getMenu().getName();
         this.quantity = basket.getQuantity();
         this.totalPrice = basket.getQuantity()*basket.getMenu().getPrice();
     }

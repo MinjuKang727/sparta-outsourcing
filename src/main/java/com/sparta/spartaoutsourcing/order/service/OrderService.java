@@ -62,8 +62,8 @@ public class OrderService {
 
         Order order = new Order(user, store, menu, dto.getQuantity(), OrderState.REQUEST_ORDER);
         Order savedOrder = orderRepository.save(order);
-        int totalPrice = savedOrder.getQuantity()*menu.getPrice();
-        if (totalPrice < store.getMinOrder()) {
+        Long totalPrice = savedOrder.getQuantity()*menu.getPrice();
+        if (totalPrice < Long.parseLong(store.getMinOrderPrice())) {
             throw new IllegalArgumentException("최소 주문 금액보다 낮습니다.");
         }
         return new OrderResponseDto(order);
@@ -76,12 +76,12 @@ public class OrderService {
         List<Basket> basketList = basketRepository.findByUserId(user.getId());
 
         // 주문 금액 합
-        int totalPriceAll = 0;
+        Long totalPriceAll = 0L;
         for (Basket basket : basketList) {
-            int price = basket.getQuantity()*basket.getMenu().getPrice();
+            Long price = basket.getQuantity()*basket.getMenu().getPrice();
             totalPriceAll += price;
         }
-        if (totalPriceAll < basketList.get(0).getStore().getMinOrder()) {
+        if (totalPriceAll < Long.parseLong(basketList.get(0).getStore().getMinOrderPrice())) {
             throw new IllegalArgumentException("최소 주문 금액보다 낮습니다.");
         }
 
@@ -91,7 +91,7 @@ public class OrderService {
             Order order = new Order(basket.getUser(), basket.getStore(), basket.getMenu(), basket.getQuantity(),
                     OrderState.REQUEST_ORDER);
             Order savedOrder = orderRepository.save(order);
-            int totalPrice = order.getQuantity()*basket.getMenu().getPrice();
+            Long totalPrice = order.getQuantity()*basket.getMenu().getPrice();
 
                 OrderResponseDto orderResponseDto = new OrderResponseDto(savedOrder);
                 orderResponseDtoList.add(orderResponseDto);
@@ -109,7 +109,7 @@ public class OrderService {
             throw new IllegalArgumentException("권한이 없습니다.");
         }
 
-        if (!ObjectUtils.nullSafeEquals(store.getUser().getId(), user.getId())) {
+        if (!ObjectUtils.nullSafeEquals(store.getUsers().getId(), user.getId())) {
             throw new IllegalArgumentException("가게 주인이 아닙니다.");
         }
         Order order = orderRepository.findById(orderId).orElseThrow(() ->
@@ -121,7 +121,7 @@ public class OrderService {
         Order savedOrder = orderRepository.save(order);
         return new OrderStateResponseDto(
                 savedOrder.getId(),
-                savedOrder.getStore().getName(),
+                savedOrder.getStore().getStoreName(),
                 savedOrder.getState().getStateName()
         );
     }
