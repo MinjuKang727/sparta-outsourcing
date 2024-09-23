@@ -19,6 +19,7 @@ import com.sparta.spartaoutsourcing.user.enums.UserRole;
 import com.sparta.spartaoutsourcing.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +49,7 @@ public class OrderService {
                 new NullPointerException("가게가 존재하지 않습니다."));
 
         // 영업시간 확인
-        if (dto.getOrderTime().isBefore(store.getOpenTime()) || dto.getOrderTime().isAfter(store.getCloseTime())) {
+        if (dto.getOrderTime().toLocalTime().isBefore(store.getOpenTime()) || dto.getOrderTime().toLocalTime().isAfter(store.getCloseTime())) {
             throw new IllegalArgumentException("영업시간이 아닙니다.");
         }
 
@@ -62,7 +64,7 @@ public class OrderService {
 
         Order order = new Order(user, store, menu, dto.getQuantity(), OrderState.REQUEST_ORDER);
         Order savedOrder = orderRepository.save(order);
-        Long totalPrice = savedOrder.getQuantity()*menu.getPrice();
+        Long totalPrice = (long) savedOrder.getQuantity() * menu.getPrice();
         if (totalPrice < Long.parseLong(store.getMinOrderPrice())) {
             throw new IllegalArgumentException("최소 주문 금액보다 낮습니다.");
         }
@@ -78,7 +80,7 @@ public class OrderService {
         // 주문 금액 합
         Long totalPriceAll = 0L;
         for (Basket basket : basketList) {
-            Long price = basket.getQuantity()*basket.getMenu().getPrice();
+            Long price = (long) basket.getQuantity() * basket.getMenu().getPrice();
             totalPriceAll += price;
         }
         if (totalPriceAll < Long.parseLong(basketList.get(0).getStore().getMinOrderPrice())) {
@@ -91,7 +93,7 @@ public class OrderService {
             Order order = new Order(basket.getUser(), basket.getStore(), basket.getMenu(), basket.getQuantity(),
                     OrderState.REQUEST_ORDER);
             Order savedOrder = orderRepository.save(order);
-            Long totalPrice = order.getQuantity()*basket.getMenu().getPrice();
+            Long totalPrice = (long) order.getQuantity() * basket.getMenu().getPrice();
 
                 OrderResponseDto orderResponseDto = new OrderResponseDto(savedOrder);
                 orderResponseDtoList.add(orderResponseDto);
