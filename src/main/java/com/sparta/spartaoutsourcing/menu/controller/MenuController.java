@@ -18,7 +18,7 @@ public class MenuController {
 
     // 메뉴 생성
     @PostMapping("/{store_id}/menus")
-    public ResponseEntity<?> createMenu(@PathVariable Long store_id, @RequestBody MenuRequestDto menuRequestDto) {
+    public ResponseEntity<?> createMenu(@PathVariable("store_id") Long store_id, @RequestBody MenuRequestDto menuRequestDto) {
         log.info(":::메뉴 생성:::");
 
         return ResponseEntity.status(HttpStatus.CREATED).body(menuService.createMenu(store_id, menuRequestDto));
@@ -26,7 +26,7 @@ public class MenuController {
 
     // 메뉴 수정
     @PutMapping("/{store_id}/menus/{menu_id}")
-    public ResponseEntity<?> updateMenu(@PathVariable Long store_id, @PathVariable Long menu_id, @RequestBody MenuRequestDto menuRequestDto) {
+    public ResponseEntity<?> updateMenu(@PathVariable("store_id") Long store_id, @PathVariable("menu_id") Long menu_id, @RequestBody MenuRequestDto menuRequestDto) {
         log.info(":::메뉴 수정:::");
 
         return ResponseEntity.ok().body(menuService.updateMenu(store_id, menu_id, menuRequestDto));
@@ -34,7 +34,7 @@ public class MenuController {
 
     // 메뉴 삭제
     @DeleteMapping("/{store_id}/menus/{menu_id}")
-    public ResponseEntity<?> deleteMenu(@PathVariable Long store_id, @PathVariable Long menu_id) {
+    public ResponseEntity<?> deleteMenu(@PathVariable("store_id") Long store_id, @PathVariable("menu_id") Long menu_id) {
         log.info(":::메뉴 삭제:::");
         
         menuService.deleteMenu(store_id, menu_id); // 예외가 발생하지 않으면 성공
@@ -44,7 +44,7 @@ public class MenuController {
 
     // 메뉴 복원
     @PutMapping("/{store_id}/menus/{menu_id}/restore")
-    public ResponseEntity<?> restoreMenu(@PathVariable Long store_id, @PathVariable Long menu_id) {
+    public ResponseEntity<?> restoreMenu(@PathVariable("store_id") Long store_id, @PathVariable("menu_id") Long menu_id) {
         log.info(":::메뉴 복원:::");
 
         menuService.updateMenu(store_id, menu_id);
