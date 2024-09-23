@@ -16,6 +16,8 @@ public class StoreResponseDto {
 
     private LocalTime closeTime;
 
+    private boolean isFavorite;
+
     private String minOrderPrice;
 
 
@@ -28,6 +30,4 @@ public class StoreResponseDto {
         this.closeTime = store.getCloseTime();
         this.minOrderPrice = store.getMinOrderPrice();
     }
-
-
 }

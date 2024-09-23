@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -35,6 +36,22 @@ public class KakaoService {
 
     @Value("${rest.api.key}")
     private String clientId;
+
+    public RedirectView kakaoLogin() {
+        // 요청 URL 만들기
+        String kakaoAuthUrl = UriComponentsBuilder
+                .fromUriString("https://kauth.kakao.com")
+                .path("/oauth/authorize")
+                .queryParam("client_id", clientId)
+                .queryParam("redirect_uri", "http://localhost:8080/users/login/kakao/callback")
+                .queryParam("response_type", "code")
+                .build()
+                .toString();
+
+        log.info("Redirect URL : {}", kakaoAuthUrl);
+
+        return new RedirectView(kakaoAuthUrl);
+    }
 
     public UserResponseDto kakaoLogin(String code) throws JsonProcessingException {
         log.info("kakaoLogin() 메서드 실행");
@@ -75,7 +92,7 @@ public class KakaoService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", clientId);
-        body.add("redirect_uri", "http://localhost:8080/users/kakao/callback");
+        body.add("redirect_uri", "http://localhost:8080/users/login/kakao/callback");
         body.add("code", code);  // 매개변수로 받은 인가 코드
 
         RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity
