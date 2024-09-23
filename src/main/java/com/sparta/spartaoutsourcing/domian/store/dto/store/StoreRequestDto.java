@@ -1,4 +1,4 @@
-package com.sparta.spartaoutsourcing.domian.store.dto;
+package com.sparta.spartaoutsourcing.domian.store.dto.store;
 
 import lombok.Data;
 

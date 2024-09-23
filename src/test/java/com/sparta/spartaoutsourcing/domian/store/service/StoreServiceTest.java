@@ -1,53 +1,50 @@
 package com.sparta.spartaoutsourcing.domian.store.service;
 
-import com.sparta.spartaoutsourcing.domian.store.dto.StoreRequestDto;
-import com.sparta.spartaoutsourcing.domian.store.dto.StoreResponseDto;
-import com.sparta.spartaoutsourcing.domian.store.entity.Store;
-import com.sparta.spartaoutsourcing.domian.store.repository.StoreRepository;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.time.LocalTime;
-
+import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+import com.sparta.spartaoutsourcing.domian.store.dto.store.StoreRequestDto;
+import com.sparta.spartaoutsourcing.domian.store.repository.StoreRepository;
+import com.sparta.spartaoutsourcing.user.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
+@ExtendWith(MockitoExtension.class)
 class StoreServiceTest {
-
-    @Mock
-    private StoreService storeService;
 
     @Mock
     private StoreRepository storeRepository;
 
-    @Test
-    void createStore(StoreRequestDto storeRequestDto) {
-        Store store = new Store(storeRequestDto);
-        StoreResponseDto storeResponseDto = new StoreResponseDto(store);
-        storeResponseDto.setId(1L);
-        storeResponseDto.setStoreName("김치찌개");
-        storeResponseDto.setOpenTime(LocalTime.parse("10:00"));
-        storeResponseDto.setCloseTime(LocalTime.parse("18:00"));
-        storeResponseDto.setMinOrderPrice("10000");
-        storeService.createStore(storeRequestDto);
+    @Mock
+    private UserRepository userRepository;
 
+    @InjectMocks
+    private StoreService storeService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);  // Mockito 초기화
     }
 
+    // 가게 생성 테스트
     @Test
-    void getStore() {
+    void createStore_checkUser() {
+        // given
+        Long userId = 1L;
+        StoreRequestDto requestDto = new StoreRequestDto();
+        lenient().when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        // when & then
+        NullPointerException exception = assertThrows(NullPointerException.class, ()
+                -> storeService.createStore(userId, requestDto));
+        assertEquals("회원이 아닙니다", exception.getMessage());
     }
 
-    @Test
-    void findAllStores() {
-    }
-
-    @Test
-    void updateStore() {
-    }
-
-    @Test
-    void storeDelete() {
-    }
 }

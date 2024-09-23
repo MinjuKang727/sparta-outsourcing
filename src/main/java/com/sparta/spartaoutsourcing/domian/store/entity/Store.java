@@ -1,7 +1,7 @@
 package com.sparta.spartaoutsourcing.domian.store.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.sparta.spartaoutsourcing.domian.store.dto.StoreRequestDto;
+import com.sparta.spartaoutsourcing.domian.store.dto.store.StoreRequestDto;
 import com.sparta.spartaoutsourcing.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;

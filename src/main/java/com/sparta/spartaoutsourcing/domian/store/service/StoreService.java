@@ -1,7 +1,7 @@
 package com.sparta.spartaoutsourcing.domian.store.service;
 
-import com.sparta.spartaoutsourcing.domian.store.dto.StoreRequestDto;
-import com.sparta.spartaoutsourcing.domian.store.dto.StoreResponseDto;
+import com.sparta.spartaoutsourcing.domian.store.dto.store.StoreRequestDto;
+import com.sparta.spartaoutsourcing.domian.store.dto.store.StoreResponseDto;
 import com.sparta.spartaoutsourcing.domian.store.entity.Store;
 import com.sparta.spartaoutsourcing.domian.store.exception.MaxStoreLimitException;
 import com.sparta.spartaoutsourcing.domian.store.repository.StoreRepository;
