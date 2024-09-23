@@ -5,9 +5,11 @@ import com.sparta.spartaoutsourcing.user.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "users")
 public class User {
@@ -27,6 +29,8 @@ public class User {
     private Boolean isDeleted = false;
 
     private Long kakaoId;
+
+
 
     public User(String email, String username, String password, UserRole role) {
         this.email = email;
