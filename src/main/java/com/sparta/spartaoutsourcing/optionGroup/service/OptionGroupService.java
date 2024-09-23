@@ -10,6 +10,7 @@ import com.sparta.spartaoutsourcing.optionGroup.dto.request.OptionGroupRequestDt
 import com.sparta.spartaoutsourcing.optionGroup.dto.response.OptionGroupSimpleResponseDto;
 import com.sparta.spartaoutsourcing.optionGroup.entity.OptionGroup;
 import com.sparta.spartaoutsourcing.optionGroup.repository.OptionGroupRepository;
+import com.sparta.spartaoutsourcing.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class OptionGroupService {
 
     // 옵션 그룹 생성
     @Transactional
-    public OptionGroupSimpleResponseDto addOptionGroup(Long menu_id, OptionGroupRequestDto requestDto) {
+    public OptionGroupSimpleResponseDto addOptionGroup(Long menu_id, OptionGroupRequestDto requestDto, User owner) {
         log.info("addOptionGroup() 메서드 실행");
 
         Menu menu = menuRepository.findById(menu_id)
@@ -39,7 +40,7 @@ public class OptionGroupService {
             throw new AlreadyExistsException("해당 이름의 옵션 그룹이 이미 존재합니다.");
         }
 
-        OptionGroup optionGroup = new OptionGroup(requestDto.getName(), menu);
+        OptionGroup optionGroup = new OptionGroup(requestDto.getName(), menu, owner);
 
         optionGroupRepository.save(optionGroup);
         return new OptionGroupSimpleResponseDto(optionGroup);
@@ -47,7 +48,7 @@ public class OptionGroupService {
 
     // 옵션 그룹 수정
     @Transactional
-    public OptionGroupSimpleResponseDto updateOptionGroup(Long id, OptionGroupRequestDto requestDto) {
+    public OptionGroupSimpleResponseDto updateOptionGroup(Long id, OptionGroupRequestDto requestDto, User owner) {
         log.info("updateOptionGroup() 메서드 실행");
 
         OptionGroup optionGroup = optionGroupRepository.findById(id)
@@ -62,7 +63,7 @@ public class OptionGroupService {
             // 옵션이 존재하는지 확인
             if (menuOptionRepository.existsByOptionGroup_Id(optionGroup.getId())) {
                 // 새로 생성하는 로직
-                OptionGroup newGroup = new OptionGroup(requestDto.getName(), optionGroup.getMenu());
+                OptionGroup newGroup = new OptionGroup(requestDto.getName(), optionGroup.getMenu(), owner);
                 optionGroupRepository.save(newGroup);
                 return new OptionGroupSimpleResponseDto(newGroup);
             }
@@ -124,13 +125,32 @@ public class OptionGroupService {
         }
     }
 
-    // 활성화된 모든 옵션 그룹 조회
-    public List<OptionGroupSimpleResponseDto> getAllOptionGroups() {
-        log.info("getAllOptionGroups() 메서드 실행");
+    // 특정 사용자의 활성화된 옵션 그룹 조회
+    public List<OptionGroupSimpleResponseDto> getAllOptionGroupsByUserId(Long userId) {
+        log.info("getAllOptionGroupsByUserId() 메서드 실행");
 
-        List<OptionGroup> activeOptionGroup = optionGroupRepository.findByIsDeleted(false);
-        return activeOptionGroup.stream()
+        List<OptionGroup> activeOptionGroups = optionGroupRepository.findByIsDeletedFalseAndOwnerId(userId);
+        return activeOptionGroups.stream()
                 .map(OptionGroupSimpleResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    // 메뉴 소유자 ID 조회
+    public Long findMenuOwnerIdById(Long menuId) {
+        Menu menu = menuRepository.findById(menuId)
+                .orElseThrow(() -> new NotFoundException("해당 메뉴를 찾을 수 없습니다."));
+        return menu.getStore().getUser().getId(); // 예시로 가게 소유자 ID를 반환
+    }
+
+    // 그룹 조회
+    public OptionGroup findById(Long groupId) {
+        return optionGroupRepository.findById(groupId)
+                .orElseThrow(() -> new NotFoundException("해당 옵션 그룹을 찾을 수 없습니다."));
+    }
+
+    // 옵션 그룹에 해당하는 메뉴 ID 조회
+    public Long findMenuIdByGroupId(Long groupId) {
+        OptionGroup group = findById(groupId); // 옵션 그룹 조회
+        return group.getMenu().getId(); // 해당 메뉴 ID 반환
     }
 }
