@@ -38,7 +38,7 @@ public class UserService {
 
     @Transactional
     public UserResponseDto signup(UserSignupRequestDto requestDto) throws UserException {
-        log.trace("signup() 메서드 실행");
+        log.info("signup() 메서드 실행");
         String email = requestDto.getEmail();
 
         // 회원 중복 확인
@@ -72,7 +72,7 @@ public class UserService {
      */
     @Transactional
     public void deleteUser(User user, UserDeleteRequestDto requestDto) throws UserException {
-        log.trace("deleteUser() 메서드 실행");
+        log.info("deleteUser() 메서드 실행");
 
         if (!this.passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
             throw new UserException("회원 탈퇴 실패", new IllegalArgumentException("비밀번호를 잘못입력하셨습니다."));
@@ -83,7 +83,7 @@ public class UserService {
     }
 
     public String createToken(UserResponseDto responseDto) throws UnsupportedEncodingException {
-        log.trace("createToken() 메서드 실행");
+        log.info("createToken() 메서드 실행");
         return jwtUtil.createToken(responseDto.getId(), responseDto.getEmail(), responseDto.getUsername(), responseDto.getRole());
     }
 
