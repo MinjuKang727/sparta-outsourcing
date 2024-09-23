@@ -1,5 +1,6 @@
 package com.sparta.spartaoutsourcing.review.entity;
 
+import com.sparta.spartaoutsourcing.order.entity.Order;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,12 +21,15 @@ public class Review {
     @Column(nullable = false)
     String content;
 
-    @OneToOne(optional = true)
-    @JoinColumn(name = "reviewCommentId")
+    @OneToOne(optional = false)
+    @JoinColumn
+    Order order;
+
+    @OneToOne(optional = true, mappedBy = "review")
     ReviewComment reviewComment;
 
     @Builder
-    private Review(Integer rating, String content){
+    private Review(Order order, Integer rating, String content){
         this.rating = rating;
         this.content = content;
     }

@@ -29,9 +29,9 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false) // 주문자 id
     private User user;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "store_id", nullable = false) // 가게 id
-//    private Store store;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id", nullable = false) // 가게 id
+    private Store store;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", nullable = false) // 메뉴 id
@@ -54,10 +54,9 @@ public class Order {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime modifiedAt;
 
-//    public Order(User user, Store store, Menu menu, int quantity, OrderState state) {
-    public Order(User user, Menu menu, int quantity, OrderState state) {
+    public Order(User user, Store store, Menu menu, int quantity, OrderState state) {
         this.user = user;
-//        this.store = store;
+        this.store = store;
         this.menu = menu;
         this.quantity = quantity;
         this.state = state;

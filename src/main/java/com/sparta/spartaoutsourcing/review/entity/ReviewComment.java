@@ -15,7 +15,8 @@ public class ReviewComment {
     @Column
     Long id;
 
-    @OneToOne(optional = false, mappedBy = "reviewComment")
+    @OneToOne(optional = false)
+    @JoinColumn
     Review review;
 
     @Column(nullable = false)

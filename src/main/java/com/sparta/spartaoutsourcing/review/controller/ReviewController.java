@@ -23,8 +23,8 @@ public class ReviewController {
     }
 
     @PostMapping("/orders/{orderId}/review")
-    ResponseEntity<ReviewResponseDto> createReview(@PathVariable String orderId, @RequestBody @Valid CreateReviewRequestDto createReviewRequestDto) {
-        Review review = reviewService.createReview(createReviewRequestDto.getRating(), createReviewRequestDto.getContent());
+    ResponseEntity<ReviewResponseDto> createReview(@PathVariable Long orderId, @RequestBody @Valid CreateReviewRequestDto createReviewRequestDto) {
+        Review review = reviewService.createReview(orderId, createReviewRequestDto.getRating(), createReviewRequestDto.getContent());
         ReviewResponseDto reviewResponseDto = ReviewResponseDto.builder()
                 .id(review.getId())
                 .rating(review.getRating())
