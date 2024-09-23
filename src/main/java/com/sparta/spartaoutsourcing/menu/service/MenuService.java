@@ -200,7 +200,7 @@ public class MenuService {
     }
 
     // 메뉴 복원
-    public void updateMenu(Long store_id, Long menu_id) {
+    public void restoreMenu(Long store_id, Long menu_id) {
         log.info("updateMenu() 메서드 실행");
 
         Menu menu = menuRepository.findById(menu_id)

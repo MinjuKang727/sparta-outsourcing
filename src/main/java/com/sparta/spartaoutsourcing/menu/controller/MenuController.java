@@ -47,7 +47,7 @@ public class MenuController {
     public ResponseEntity<?> restoreMenu(@PathVariable Long store_id, @PathVariable Long menu_id) {
         log.info(":::메뉴 복원:::");
 
-        menuService.updateMenu(store_id, menu_id);
+        menuService.restoreMenu(store_id, menu_id);
 
         return ResponseEntity.ok().body("메뉴 복원 성공");
     }
