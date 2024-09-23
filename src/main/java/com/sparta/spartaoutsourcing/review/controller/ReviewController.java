@@ -1,10 +1,7 @@
 package com.sparta.spartaoutsourcing.review.controller;
 
 import com.sparta.spartaoutsourcing.auth.security.UserDetailsImpl;
-import com.sparta.spartaoutsourcing.review.dto.CreateReviewCommentDto;
-import com.sparta.spartaoutsourcing.review.dto.CreateReviewRequestDto;
-import com.sparta.spartaoutsourcing.review.dto.ReviewCommentResponseDto;
-import com.sparta.spartaoutsourcing.review.dto.ReviewResponseDto;
+import com.sparta.spartaoutsourcing.review.dto.*;
 import com.sparta.spartaoutsourcing.review.entity.Review;
 import com.sparta.spartaoutsourcing.review.entity.ReviewComment;
 import com.sparta.spartaoutsourcing.review.service.ReviewCommentService;
@@ -13,10 +10,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class ReviewController {
@@ -49,5 +45,22 @@ public class ReviewController {
                 .build();
 
         return ResponseEntity.status(HttpStatus.CREATED).body(reviewCommentResponseDto);
+    }
+
+    @GetMapping("/stores/{storeId}/review")
+    ResponseEntity<List<ReviewWithCommentResponseDto>> getStoreReviews(@PathVariable Long storeId, @RequestParam(required = false, name = "min") Integer _min, @RequestParam(required = false, name = "max") Integer _max) {
+        Integer min = _min == null ? Integer.MIN_VALUE : _min;
+        Integer max = _max == null ? Integer.MAX_VALUE : _max;
+        List<Review> reviews = reviewService.getStoreReviews(storeId, min, max);
+        List<ReviewWithCommentResponseDto> reviewWithCommentResponseDtos = reviews.stream().map(v -> ReviewWithCommentResponseDto.builder()
+                .id(v.getId())
+                .rating(v.getRating())
+                .content(v.getContent())
+                .reviewComment(v.getReviewComment() != null ? ReviewCommentResponseDto.builder()
+                        .id(v.getReviewComment().getId())
+                        .content(v.getContent()).build() : null
+                ).build()
+        ).toList();
+        return ResponseEntity.ok(reviewWithCommentResponseDtos);
     }
 }
