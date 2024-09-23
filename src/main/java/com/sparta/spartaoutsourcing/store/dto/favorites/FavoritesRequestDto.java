@@ -7,6 +7,6 @@ import java.time.LocalDateTime;
 @Data
 public class FavoritesRequestDto {
 
-    private boolean isFavorite;
+    private boolean isFavorite = true;
     private LocalDateTime createdAt;
 }
