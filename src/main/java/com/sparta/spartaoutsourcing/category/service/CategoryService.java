@@ -88,6 +88,7 @@ public class CategoryService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundException("해당 카테고리를 찾을 수 없습니다."));
         
+        // 해당 카테고리가 이미 삭제되었는지 확인
         if (category.getIsDeleted()) {
             throw new AlreadyDeletedException("해당하는 카테고리는 이미 삭제되었습니다.");
         }
@@ -121,18 +122,37 @@ public class CategoryService {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 카테고리를 찾을 수 없습니다."));
 
+        // 카테고리가 이미 복원됬는지 확인
         if (!category.getIsDeleted()) {
             throw new AlreadyDeletedException("해당하는 카테고리는 이미 복원되었습니다.");
         }
 
         category.setDeleted(false);
         categoryRepository.save(category);
+
+
+        // 메뉴와 옵션 그룹과 옵션 복원
+        for (var menus : category.getMenus()) {
+            menus.setDeleted(false);
+            menuRepository.save(menus);
+
+            for (OptionGroup optionGroup : menus.getOptionGroups()) {
+                optionGroup.setDeleted(false);
+                optionGroupRepository.save(optionGroup); // 옵션 그룹 복원
+
+                for (var menuOption : optionGroup.getMenuOptions()) {
+                    menuOption.setDeleted(false);
+                    menuOptionRepository.save(menuOption); // 메뉴 옵션 복원
+                }
+            }
+        }
     }
 
     // 활성화된 모든 카테고리 조회
     public List<CategoryResponseDto> getAllActiveCategories() {
         log.info("getAllActiveCategories() 메서드 실행");
 
+        // 카테고리들 중에서 활성화 상태인 카테고리들을 반환
         List<Category> activeCategories = categoryRepository.findByIsDeleted(false);
         return activeCategories.stream()
                 .map(CategoryResponseDto::new)

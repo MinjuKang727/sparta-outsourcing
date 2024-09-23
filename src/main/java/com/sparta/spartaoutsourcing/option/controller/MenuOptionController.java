@@ -45,7 +45,7 @@ public class MenuOptionController {
     }
 
     // 옵션 복원
-    @PostMapping("/{id}/restore")
+    @PutMapping("/{id}/restore")
     public ResponseEntity<?> restoreMenuOption(@PathVariable Long id) {
         log.info(":::옵션 복원:::");
 

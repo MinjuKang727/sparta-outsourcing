@@ -45,7 +45,7 @@ public class CategoryController {
     }
 
     // 카테고리 복원
-    @PostMapping("/{id}/restore")
+    @PutMapping("/{id}/restore")
     public ResponseEntity<?> restoreCategory(@PathVariable Long id) {
         log.info(":::카테고리 복원:::");
 

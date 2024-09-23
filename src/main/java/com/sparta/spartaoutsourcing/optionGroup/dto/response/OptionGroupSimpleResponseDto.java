@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OptionGroupSimpleResponseDto {
     private Long id;
-    private String name;
+    private String optionGroup;
 
     public OptionGroupSimpleResponseDto(OptionGroup optionGroup) {
         this.id = optionGroup.getId();
-        this.name = optionGroup.getName();
+        this.optionGroup = optionGroup.getName();
     }
 }
