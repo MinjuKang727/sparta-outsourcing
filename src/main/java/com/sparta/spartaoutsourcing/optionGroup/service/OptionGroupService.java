@@ -109,12 +109,19 @@ public class OptionGroupService {
         OptionGroup optionGroup = optionGroupRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 옵션 그룹이 없습니다."));
 
+        // 해당 옵션 그룹이 이미 복원되었는지 확인
         if (!optionGroup.getIsDeleted()) {
             throw new AlreadyDeletedException("해당하는 옵션 그룹은 이미 복원되었습니다.");
         }
 
         optionGroup.setDeleted(false);
         optionGroupRepository.save(optionGroup);
+
+        // 해당 그룹에 해당하는 옵션들도 복원
+        for (var option : optionGroup.getMenuOptions()) {
+            option.setDeleted(false);
+            menuOptionRepository.save(option);
+        }
     }
 
     // 활성화된 모든 옵션 그룹 조회

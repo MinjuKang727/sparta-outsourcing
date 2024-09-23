@@ -34,14 +34,10 @@ public class Favorites {
     private Store stores;
 
 
-    public Favorites(User user, Store store, FavoritesRequestDto favoritesRequestDto) {
+    public Favorites(User user, Store store) {
         this.users = user;
         this.stores = store;
-        this.isFavorite = favoritesRequestDto.isFavorite();
+        this.isFavorite = isFavorite();
         this.createdAt = LocalDateTime.now();
-    }
-
-    public void activateFavorites() {
-        this.isFavorite = false;
     }
 }

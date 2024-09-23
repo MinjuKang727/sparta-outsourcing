@@ -19,10 +19,10 @@ public class Menu {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String menuName;
 
     @Column(nullable = false)
-    private Long price;
+    private int price;
 
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = false;
@@ -40,16 +40,16 @@ public class Menu {
     private List<OptionGroup> optionGroups = new ArrayList<>();
 
 
-    public Menu(Store store, Category category, String menu, Long price) {
+    public Menu(Store store, Category category, String menu, int price) {
         this.store = store;
         this.category = category;
-        this.name = menu;
+        this.menuName = menu;
         this.price = price;
     }
 
 
-    public void update(String menu, Long price) {
-        this.name = menu;
+    public void update(String menu, int price) {
+        this.menuName = menu;
         this.price = price;
     }
 

@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 public class MenuRequestDto {
     private String name;
-    private Long price;
+    private int price;
     private CategoryRequestDto category;
     private List<OptionGroupRequestDto> optionGroups;
 }
