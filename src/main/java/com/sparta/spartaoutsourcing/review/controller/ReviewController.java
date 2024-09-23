@@ -47,7 +47,7 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.CREATED).body(reviewCommentResponseDto);
     }
 
-    @GetMapping("/stores/{storeId}/review")
+    @GetMapping("/stores/{storeId}/reviews")
     ResponseEntity<List<ReviewWithCommentResponseDto>> getStoreReviews(@PathVariable Long storeId, @RequestParam(required = false, name = "min") Integer _min, @RequestParam(required = false, name = "max") Integer _max) {
         Integer min = _min == null ? Integer.MIN_VALUE : _min;
         Integer max = _max == null ? Integer.MAX_VALUE : _max;
@@ -58,7 +58,7 @@ public class ReviewController {
                 .content(v.getContent())
                 .reviewComment(v.getReviewComment() != null ? ReviewCommentResponseDto.builder()
                         .id(v.getReviewComment().getId())
-                        .content(v.getContent()).build() : null
+                        .content(v.getReviewComment().getContent()).build() : null
                 ).build()
         ).toList();
         return ResponseEntity.ok(reviewWithCommentResponseDtos);

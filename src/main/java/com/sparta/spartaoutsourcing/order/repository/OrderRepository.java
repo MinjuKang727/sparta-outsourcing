@@ -12,6 +12,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Page<Order> findByUserId(Long userId, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"review", "reviewComment"})
-    List<Order> findByStore_Id(Long store_id);
+    @EntityGraph(attributePaths = {"review", "review.reviewComment"})
+    List<Order> findByStore_IdAndReviewIsNotNullAndReview_RatingBetween(Long store_id, Integer min, Integer max);
 }

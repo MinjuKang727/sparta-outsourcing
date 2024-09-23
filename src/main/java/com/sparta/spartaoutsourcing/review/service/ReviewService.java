@@ -43,9 +43,9 @@ public class ReviewService {
     }
 
     public List<Review> getStoreReviews(Long storeId, Integer min, Integer max) {
-        if (storeRepository.existsById(storeId))
+        if (!storeRepository.existsById(storeId))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 가게가 존재하지 않습니다.");
 
-        return orderRepository.findByStore_Id(storeId).stream().map(Order::getReview).toList();
+        return orderRepository.findByStore_IdAndReviewIsNotNullAndReview_RatingBetween(storeId, min, max).stream().map(Order::getReview).toList();
     }
 }
