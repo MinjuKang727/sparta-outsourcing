@@ -16,9 +16,9 @@ public class BasketResponseDto {
 
     public BasketResponseDto(Basket basket) {
         this.storeName = basket.getStore().getStoreName();
-        this.menuName = basket.getMenu().getName();
+        this.menuName = basket.getMenu().getMenuName();
         this.quantity = basket.getQuantity();
-        this.totalPrice = basket.getQuantity()*basket.getMenu().getPrice();
+        this.totalPrice = (long) basket.getQuantity() * basket.getMenu().getPrice();
     }
 
 }

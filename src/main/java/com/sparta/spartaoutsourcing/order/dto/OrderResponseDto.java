@@ -24,9 +24,9 @@ public class OrderResponseDto {
     public OrderResponseDto(Order order) {
         this.email = order.getUser().getEmail();
         this.storeName = order.getStore().getStoreName();
-        this.menuName = order.getMenu().getName();
+        this.menuName = order.getMenu().getMenuName();
         this.quantity = order.getQuantity();
-        this.totalPrice = order.getQuantity()*order.getMenu().getPrice();
+        this.totalPrice = (long) order.getQuantity() * order.getMenu().getPrice();
         this.state = order.getState().getStateName();
         this.createdAt = order.getCreatedAt();
         this.modifiedAt = order.getModifiedAt();
