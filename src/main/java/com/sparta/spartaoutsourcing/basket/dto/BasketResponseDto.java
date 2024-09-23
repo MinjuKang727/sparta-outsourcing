@@ -15,10 +15,10 @@ public class BasketResponseDto {
     private final int totalPrice;
 
     public BasketResponseDto(Basket basket) {
-        this.storeName = basket.getStore().getName();
-        this.menuName = basket.getMenu().getMenuName();
+        this.storeName = basket.getStore().getStoreName();
+        this.menuName = basket.getMenu().getName();
         this.quantity = basket.getQuantity();
-        this.totalPrice = basket.getQuantity()*basket.getMenu().getPrice();
+        this.totalPrice = (int) (basket.getQuantity()*basket.getMenu().getPrice());
     }
 
 }
