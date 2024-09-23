@@ -1,15 +1,11 @@
 package com.sparta.spartaoutsourcing.user.entity;
 
-import com.sparta.spartaoutsourcing.domian.store.entity.Store;
 import com.sparta.spartaoutsourcing.user.dto.request.UserSignupRequestDto;
 import com.sparta.spartaoutsourcing.user.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter

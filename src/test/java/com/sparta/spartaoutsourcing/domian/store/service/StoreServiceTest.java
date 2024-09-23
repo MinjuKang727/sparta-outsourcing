@@ -3,8 +3,9 @@ package com.sparta.spartaoutsourcing.domian.store.service;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.sparta.spartaoutsourcing.domian.store.dto.store.StoreRequestDto;
-import com.sparta.spartaoutsourcing.domian.store.repository.StoreRepository;
+import com.sparta.spartaoutsourcing.store.dto.store.StoreRequestDto;
+import com.sparta.spartaoutsourcing.store.repository.StoreRepository;
+import com.sparta.spartaoutsourcing.store.service.StoreService;
 import com.sparta.spartaoutsourcing.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
