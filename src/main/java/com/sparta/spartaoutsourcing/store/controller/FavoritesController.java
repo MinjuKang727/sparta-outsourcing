@@ -1,5 +1,6 @@
 package com.sparta.spartaoutsourcing.store.controller;
 
+import com.sparta.spartaoutsourcing.store.dto.favorites.FavoritesResponseDto;
 import com.sparta.spartaoutsourcing.store.dto.store.StoreResponseDto;
 import com.sparta.spartaoutsourcing.store.service.FavoritesService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class FavoritesController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<StoreResponseDto>> getListFavorites(@PathVariable("userId") Long userId) {
+    public ResponseEntity<List<FavoritesResponseDto>> getListFavorites(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(favoritesService.getListFavorites(userId));
     }
 }

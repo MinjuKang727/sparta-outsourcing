@@ -40,8 +40,4 @@ public class Favorites {
         this.isFavorite = isFavorite();
         this.createdAt = LocalDateTime.now();
     }
-
-    public void activateFavorites() {
-        this.isFavorite = false;
-    }
 }
