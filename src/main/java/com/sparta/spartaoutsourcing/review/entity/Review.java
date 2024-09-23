@@ -48,5 +48,6 @@ public class Review {
     private Review(Order order, Integer rating, String content){
         this.rating = rating;
         this.content = content;
+        this.order = order;
     }
 }

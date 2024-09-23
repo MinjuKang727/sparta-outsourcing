@@ -20,8 +20,16 @@ public class ReviewCommentService {
     }
 
     @Transactional
-    public ReviewComment createReviewComment(Long reviewId, String content) {
+    public ReviewComment createReviewComment(Long reviewId, Long userId, String content) {
+        if (reviewCommentRepository.existsByReview_Id(reviewId))
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 댓글을 작성하였습니다.");
+
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "해당하는 리뷰가 존재하지 않습니다."));
+
+        if (!review.getOrder().getStore().getUsers().getId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "가게 주인만 댓글을 달 수 있습니다.");
+        }
+
         ReviewComment reviewComment = ReviewComment.builder().review(review).content(content).build();
 
         ReviewComment savedReviewComment = reviewCommentRepository.save(reviewComment);
