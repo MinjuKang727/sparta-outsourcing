@@ -1,9 +1,12 @@
 package com.sparta.spartaoutsourcing.store.dto.store;
 
+import com.sparta.spartaoutsourcing.menu.dto.response.MenuResponseDto;
 import com.sparta.spartaoutsourcing.store.entity.Store;
 import lombok.Data;
 
 import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class StoreResponseDto {
@@ -20,6 +23,8 @@ public class StoreResponseDto {
 
     private String minOrderPrice;
 
+    private List<MenuResponseDto> menus;
+
 
 
 
@@ -29,5 +34,6 @@ public class StoreResponseDto {
         this.openTime = store.getOpenTime();
         this.closeTime = store.getCloseTime();
         this.minOrderPrice = store.getMinOrderPrice();
+        this.menus = store.getMenus().stream().map(MenuResponseDto::new).collect(Collectors.toList());
     }
 }

@@ -1,6 +1,7 @@
 package com.sparta.spartaoutsourcing.store.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.sparta.spartaoutsourcing.menu.entity.Menu;
 import com.sparta.spartaoutsourcing.store.dto.store.StoreRequestDto;
 import com.sparta.spartaoutsourcing.user.entity.User;
 import jakarta.persistence.*;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -41,6 +44,10 @@ public class Store {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private User users;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
+    private List<Menu> menus = new ArrayList<>();
 
 
     public Store(StoreRequestDto storeRequestDto) {

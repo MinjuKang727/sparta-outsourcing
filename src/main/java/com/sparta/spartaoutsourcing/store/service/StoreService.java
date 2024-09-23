@@ -1,5 +1,6 @@
 package com.sparta.spartaoutsourcing.store.service;
 
+import com.sparta.spartaoutsourcing.menu.repository.MenuRepository;
 import com.sparta.spartaoutsourcing.store.dto.store.StoreRequestDto;
 import com.sparta.spartaoutsourcing.store.dto.store.StoreResponseDto;
 import com.sparta.spartaoutsourcing.store.entity.Store;
@@ -46,15 +47,15 @@ public class StoreService {
 
     //    가게 단건 조회
     @Transactional
-    public Store getStore(Long storeId) {
+    public StoreResponseDto getStore(Long storeId) {
         Store foundStore = storeRepository.findById(storeId).orElseThrow(()
                 -> new NullPointerException("가게가 존재 하지 없습니다"));
 
         if (foundStore.isClose()) {
             throw new IllegalArgumentException("폐업된 가게 입니다");
         }
-
-        return foundStore;
+//        가게 조회 시 보이는 메뉴
+        return new StoreResponseDto(foundStore);
     }
 
     //    가게 목록 조회
