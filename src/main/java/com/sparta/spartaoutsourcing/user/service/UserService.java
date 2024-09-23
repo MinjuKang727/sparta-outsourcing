@@ -1,12 +1,12 @@
 package com.sparta.spartaoutsourcing.user.service;
 
 import com.sparta.spartaoutsourcing.auth.jwt.JwtUtil;
-import com.sparta.spartaoutsourcing.user.exception.UserException;
 import com.sparta.spartaoutsourcing.user.dto.request.UserDeleteRequestDto;
 import com.sparta.spartaoutsourcing.user.dto.request.UserSignupRequestDto;
 import com.sparta.spartaoutsourcing.user.dto.response.UserResponseDto;
 import com.sparta.spartaoutsourcing.user.entity.User;
 import com.sparta.spartaoutsourcing.user.enums.UserRole;
+import com.sparta.spartaoutsourcing.user.exception.UserException;
 import com.sparta.spartaoutsourcing.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,9 +32,9 @@ public class UserService {
         this.jwtUtil = jwtUtil;
     }
 
-    // OWNER_TOKEN
-    @Value("${jwt.owner.token}")
-    private String OWNER_TOKEN;
+    // 사장님 권한 키
+    @Value("${signup.owner.key}")
+    private String ownerKey;
 
     @Transactional
     public UserResponseDto signup(UserSignupRequestDto requestDto) throws UserException {
@@ -49,8 +49,8 @@ public class UserService {
         // 사용자 ROLE 확인
         UserRole role = UserRole.USER;
         if(requestDto.getIsOwner()) {
-            if (!ObjectUtils.nullSafeEquals(OWNER_TOKEN,requestDto.getOwnerKey())) {
-                throw new UserException("회원 가입 실패", new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다."));
+            if (!ObjectUtils.nullSafeEquals(ownerKey,requestDto.getOwnerKey())) {
+                throw new UserException("회원 가입 실패", new IllegalArgumentException("잘못된 사장님 토큰값을 입력하셨습니다."));
             }
             role = UserRole.OWNER;
         }
@@ -71,7 +71,7 @@ public class UserService {
      * @throws IllegalArgumentException : 현재 로그인 한 계정과 탈퇴 요청한 계정이 다른 경우, 비밀번호가 일치하지 않는 경우 발생
      */
     @Transactional
-    public void deleteUser(User user, UserDeleteRequestDto requestDto) throws UserException {
+    public Boolean deleteUser(User user, UserDeleteRequestDto requestDto) throws UserException {
         log.info("deleteUser() 메서드 실행");
 
         if (!this.passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
@@ -79,7 +79,8 @@ public class UserService {
         }
 
         user.delete();
-        this.userRepository.save(user);
+        User deletedUser = this.userRepository.save(user);
+        return deletedUser.getIsDeleted();
     }
 
     public String createToken(UserResponseDto responseDto) throws UnsupportedEncodingException {
