@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CategoryResponseDto {
     private Long id;        // 카테고리 ID
-    private String name;    // 카테고리 이름
+    private String category;    // 카테고리 이름
 
     public CategoryResponseDto(Category category) {
         this.id = category.getId();
-        this.name = category.getName();
+        this.category = category.getName();
     }
 }

@@ -45,7 +45,7 @@ public class OptionGroupController {
     }
 
     // 옵션 그룹 복원
-    @PostMapping("/{id}/restore")
+    @PutMapping("/{id}/restore")
     public ResponseEntity<?> restoreOptionGroup(@PathVariable Long id) {
         log.info(":::옵션 그룹 복원:::");
 

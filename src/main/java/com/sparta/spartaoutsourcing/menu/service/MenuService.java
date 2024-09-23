@@ -56,7 +56,7 @@ public class MenuService {
         }
 
         // 메뉴 존재 유무 확인
-        if (menuRepository.existsByNameAndStoreId(menuRequestDto.getName(), store_id)) {
+        if (menuRepository.existsByMenuNameAndStoreId(menuRequestDto.getName(), store_id)) {
             throw new AlreadyExistsException("해당가게의 메뉴가 이미 존재합니다.");
         }
         
@@ -145,6 +145,7 @@ public class MenuService {
                     OptionGroup newGroup = new OptionGroup(groupDto.getName(), menu);
                     optionGroupRepository.save(newGroup);
 
+                    // 새 옵션 추가
                     for (var optionDto : groupDto.getOptions()) {
                         MenuOption menuOption = new MenuOption(optionDto.getName(), optionDto.getPrice(), newGroup, menu);
                         newGroup.getMenuOptions().add(menuOption);
@@ -166,15 +167,18 @@ public class MenuService {
 
         Menu menu = menuRepository.findById(menu_id)
                 .orElseThrow(() -> new NotFoundException("해당하는 메뉴가 없습니다."));
-
+        
+        // 해당 메뉴가 해당 가게에 있는지 확인
         if (!menu.getStore().getId().equals(store_id)) {
             throw new NotFoundException("해당하는 메뉴가 등록된 가게가 아닙니다.");
         }
 
+        // 해당 메뉴가 이미 삭제되었는지 확인
         if (menu.getIsDeleted()) {
             throw new AlreadyDeletedException("해당하는 메뉴는 이미 삭제되었습니다.");
         }
 
+        // 해당 카테고리가 이미 삭제되었는지 확인
         if (menu.getCategory().getIsDeleted()) {
             throw new NotFoundException("해당 카테고리는 삭제되었습니다.");
         }

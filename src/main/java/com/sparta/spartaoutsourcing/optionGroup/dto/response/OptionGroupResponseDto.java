@@ -12,20 +12,20 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class OptionGroupResponseDto {
     private Long id;
-    private String name;
+    private String optionGroup;
     private List<MenuOptionResponseDto> options;
 
     public OptionGroupResponseDto(OptionGroup optionGroup) {
         this.id = optionGroup.getId();
-        this.name = optionGroup.getName();
+        this.optionGroup = optionGroup.getName();
         this.options = optionGroup.getMenuOptions().stream()
                 .map(MenuOptionResponseDto::new)
                 .collect(Collectors.toList());
     }
 
-    public OptionGroupResponseDto(Long id, String name) {
+    public OptionGroupResponseDto(Long id, String optionGroup) {
         this.id = id;
-        this.name = name;
+        this.optionGroup = optionGroup;
     }
 
 }
