@@ -33,10 +33,10 @@ public class Basket {
 
     private int quantity;
 
-    public Basket(User user, Menu menu, Store store, int quantity) {
+    public Basket(User user, Store store, Menu menu, int quantity) {
         this.user = user;
-        this.menu = menu;
         this.store = store;
+        this.menu = menu;
         this.quantity = quantity;
     }
 
