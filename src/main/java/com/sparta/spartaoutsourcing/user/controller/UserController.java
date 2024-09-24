@@ -1,7 +1,6 @@
 package com.sparta.spartaoutsourcing.user.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.spartaoutsourcing.auth.jwt.JwtUtil;
 import com.sparta.spartaoutsourcing.auth.security.UserDetailsImpl;
 import com.sparta.spartaoutsourcing.auth.token.TokenBlacklistService;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.AccessDeniedException;
-import java.util.Map;
 
 @Slf4j(topic = "UserController")
 @Validated
