@@ -1,6 +1,7 @@
 package com.sparta.spartaoutsourcing.user.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.spartaoutsourcing.auth.jwt.JwtUtil;
 import com.sparta.spartaoutsourcing.auth.security.UserDetailsImpl;
 import com.sparta.spartaoutsourcing.auth.token.TokenBlacklistService;
@@ -13,7 +14,6 @@ import com.sparta.spartaoutsourcing.user.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +21,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.file.AccessDeniedException;
+import java.util.Map;
 
 @Slf4j(topic = "UserController")
 @Validated
@@ -33,12 +35,6 @@ public class UserController {
     private final UserService userService;
     private final KakaoService kakaoService;
     private final TokenBlacklistService tokenBlacklistService;
-
-    @GetMapping("/users/login-page")
-    public String loginPage() {
-        return "login";
-    }
-
 
     /**
      * 회원 가입
@@ -74,19 +70,43 @@ public class UserController {
     @DeleteMapping("/users")
     public ResponseEntity<String> deleteUser(@RequestHeader(JwtUtil.AUTHORIZATION_HEADER) String token, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody @Valid UserDeleteRequestDto requestDto) throws UserException, ServletException {
         log.info("::: 회원 탈퇴 :::");
-        this.userService.deleteUser(userDetails.getUser(), requestDto);
+        Boolean isDeleted = this.userService.deleteUser(userDetails.getUser(), requestDto);
 
-        this.tokenBlacklistService.addTokenToBlackList(token);
+        if (isDeleted) {
+            this.tokenBlacklistService.addTokenToBlackList(token);
+            return ResponseEntity.status(HttpStatus.OK).body("Delete ID Completed");
+        }
 
-        return ResponseEntity.status(HttpStatus.OK).body("회원 탈퇴 성공");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to Delete ID");
     }
 
-    @GetMapping("/users/kakao/callback")
-    public ResponseEntity<UserResponseDto> kakaoLogin(@RequestParam String code) throws JsonProcessingException, UnsupportedEncodingException {
+    @GetMapping("/users/login/kakao")
+    public RedirectView kakaoLogin() {
         log.info("::: 카카오 로그인 :::");
+
+        return this.kakaoService.kakaoLogin();
+    }
+
+    /**
+     * 카카오 로그인
+     * @param code : 카카오 로그인 인가 코드
+     * @return : (Header) JWT 토큰, (Body) 로그인된 회원 정보를 담은 Dto 객체
+     * @throws JsonProcessingException : 카카오 로그인 인증 과정 중, JSON 파싱에서 발생 가능
+     * @throws UnsupportedEncodingException : createToken() 메서드 실행 중 발생 가능
+     */
+    @GetMapping("/users/login/kakao/callback")
+    public ResponseEntity<String> kakaoLoginCallback(@RequestParam String code) throws JsonProcessingException, UnsupportedEncodingException {
+        log.info("::: 카카오 로그인 Callback :::");
         UserResponseDto responseDto = this.kakaoService.kakaoLogin(code);
         String bearerToken = this.userService.createToken(responseDto);
 
-        return ResponseEntity.status(HttpStatus.OK).header(JwtUtil.AUTHORIZATION_HEADER, bearerToken).body(responseDto);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String response = objectMapper.writeValueAsString(Map.of(
+                "UserInfo", responseDto,
+                "Authorization", bearerToken
+        ));
+
+
+        return ResponseEntity.status(HttpStatus.OK).header(JwtUtil.AUTHORIZATION_HEADER, bearerToken).body(response);
     }
 }

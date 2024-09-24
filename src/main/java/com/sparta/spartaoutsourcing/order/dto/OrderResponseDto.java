@@ -15,7 +15,7 @@ public class OrderResponseDto {
     private final String storeName;
     private final String menuName;
     private final int quantity;
-    private final int totalPrice;
+    private final Long totalPrice;
     private final String state;
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
@@ -23,10 +23,10 @@ public class OrderResponseDto {
 
     public OrderResponseDto(Order order) {
         this.email = order.getUser().getEmail();
-        this.storeName = order.getStore().getName();
+        this.storeName = order.getStore().getStoreName();
         this.menuName = order.getMenu().getMenuName();
         this.quantity = order.getQuantity();
-        this.totalPrice = order.getQuantity()*order.getMenu().getPrice();
+        this.totalPrice = (long) order.getQuantity() * order.getMenu().getPrice();
         this.state = order.getState().getStateName();
         this.createdAt = order.getCreatedAt();
         this.modifiedAt = order.getModifiedAt();

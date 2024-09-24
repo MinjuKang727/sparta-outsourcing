@@ -95,7 +95,7 @@ public class MenuController {
                 .orElse("");
 
         // 소유자 확인
-        if (!store.getUser().getId().equals(userId) || !auth.equals("OWNER")) {
+        if (!store.getUsers().getId().equals(userId) || !auth.equals("OWNER")) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("접근 권한이 없습니다.");
         }
         return null; // 권한이 있을 경우 null 반환

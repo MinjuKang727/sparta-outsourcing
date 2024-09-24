@@ -175,7 +175,7 @@ class OptionGroupServiceTest {
 
         // Store 객체 생성 및 User 설정
         Store store = new Store();
-        store.setUser(user); // Store에 User 설정
+        store.setUsers(user); // Store에 User 설정
 
         // Category 객체 생성
         Category category = new Category();
