@@ -22,7 +22,7 @@ public class PointService {
     }
 
     public List<Point> getPoints(Long userId) {
-        return pointRepository.findAllByUser_Id(userId);
+        return pointRepository.findAllByUser_IdOrderByCreatedAtDesc(userId);
     }
 
     @Transactional
@@ -35,7 +35,7 @@ public class PointService {
                 throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "포인트가 부족합니다.");
             }
         }
-        
+
         Point point = Point.builder().user(user).amount(amount).build();
         return pointRepository.save(point);
     }
