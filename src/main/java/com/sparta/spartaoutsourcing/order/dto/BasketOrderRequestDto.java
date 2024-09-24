@@ -7,18 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderRequestDto {
-    @NotNull
-    @Min(0)
-    Integer quantity;
-
-    private LocalDateTime orderTime;
-
+public class BasketOrderRequestDto {
     @NotNull
     @Min(0)
     Integer usedPoint;
