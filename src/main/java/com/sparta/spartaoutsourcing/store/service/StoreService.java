@@ -1,6 +1,5 @@
 package com.sparta.spartaoutsourcing.store.service;
 
-import com.sparta.spartaoutsourcing.menu.repository.MenuRepository;
 import com.sparta.spartaoutsourcing.store.dto.store.StoreRequestDto;
 import com.sparta.spartaoutsourcing.store.dto.store.StoreResponseDto;
 import com.sparta.spartaoutsourcing.store.entity.Store;
@@ -80,7 +79,7 @@ public class StoreService {
                 -> new NullPointerException("가게가 존재 하지 않습니다"));
 
 
-        foundStore.update(storeRequestDto.getStoreName(), storeRequestDto.getOpenTime(), storeRequestDto.getCloseTime(), storeRequestDto.getMinOrderPrice());
+        foundStore.update(storeRequestDto.getStoreName(), storeRequestDto.getOpenTime(), storeRequestDto.getCloseTime(), storeRequestDto.getMinOrderPrice(),storeRequestDto.getOwnerContent());
         return storeRepository.save(foundStore);
     }
 

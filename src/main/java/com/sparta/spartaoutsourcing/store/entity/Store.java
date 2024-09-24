@@ -37,6 +37,10 @@ public class Store {
     @Column(name = "min_order_price", nullable = false)
     private String minOrderPrice;
 
+//    사장님 공지사항
+    @Column(name = "owner_content")
+    private String ownerContent = "";
+
     @Column(name = "is_close",nullable = false)
     private boolean isClose = false;
 
@@ -55,15 +59,17 @@ public class Store {
         this.openTime = storeRequestDto.getOpenTime();
         this.closeTime = storeRequestDto.getCloseTime();
         this.minOrderPrice = storeRequestDto.getMinOrderPrice();
+        this.ownerContent = storeRequestDto.getOwnerContent();
     }
 
 
 
-    public void update(String storeName,LocalTime openTime,LocalTime closeTime,String minOrderPrice) {
+    public void update(String storeName,LocalTime openTime,LocalTime closeTime,String minOrderPrice,String ownerContent) {
         this.storeName = storeName;
         this.openTime = openTime;
         this.closeTime = closeTime;
         this.minOrderPrice = minOrderPrice;
+        this.ownerContent = ownerContent;
     }
 
     public void activateStore(){

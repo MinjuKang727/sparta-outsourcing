@@ -23,6 +23,8 @@ public class StoreResponseDto {
 
     private String minOrderPrice;
 
+    private String ownerContent;
+
     private List<MenuResponseDto> menus;
 
 
@@ -34,6 +36,7 @@ public class StoreResponseDto {
         this.openTime = store.getOpenTime();
         this.closeTime = store.getCloseTime();
         this.minOrderPrice = store.getMinOrderPrice();
+        this.ownerContent = store.getOwnerContent();
         this.menus = store.getMenus().stream().map(MenuResponseDto::new).collect(Collectors.toList());
     }
 }
