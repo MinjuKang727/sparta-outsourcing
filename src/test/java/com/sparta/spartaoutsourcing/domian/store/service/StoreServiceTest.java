@@ -7,12 +7,10 @@ import com.sparta.spartaoutsourcing.store.dto.store.StoreRequestDto;
 import com.sparta.spartaoutsourcing.store.repository.StoreRepository;
 import com.sparta.spartaoutsourcing.store.service.StoreService;
 import com.sparta.spartaoutsourcing.user.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -29,18 +27,13 @@ class StoreServiceTest {
     @InjectMocks
     private StoreService storeService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);  // Mockito 초기화
-    }
-
     // 가게 생성 테스트
     @Test
     void createStore_checkUser() {
         // given
         Long userId = 1L;
         StoreRequestDto requestDto = new StoreRequestDto();
-        lenient().when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         // when & then
         NullPointerException exception = assertThrows(NullPointerException.class, ()
