@@ -27,10 +27,9 @@ public class MenuController {
 
     // 메뉴 생성
     @PostMapping("/{store_id}/menus")
-    public ResponseEntity<?> createMenu(@PathVariable("store_id") Long store_id, @RequestBody MenuRequestDto menuRequestDto) {
     public ResponseEntity<?> createMenu(@RequestHeader(JwtUtil.AUTHORIZATION_HEADER) String token,
                                         @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                        @PathVariable Long store_id,
+                                        @PathVariable("store_id") Long store_id,
                                         @RequestBody MenuRequestDto menuRequestDto) {
         log.info(":::메뉴 생성:::");
 
@@ -42,10 +41,9 @@ public class MenuController {
 
     // 메뉴 수정
     @PutMapping("/{store_id}/menus/{menu_id}")
-    public ResponseEntity<?> updateMenu(@PathVariable("store_id") Long store_id, @PathVariable("menu_id") Long menu_id, @RequestBody MenuRequestDto menuRequestDto) {
     public ResponseEntity<?> updateMenu(@RequestHeader(JwtUtil.AUTHORIZATION_HEADER) String token,
                                         @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                        @PathVariable Long store_id, @PathVariable Long menu_id,
+                                        @PathVariable("store_id") Long store_id, @PathVariable("menu_id") Long menu_id,
                                         @RequestBody MenuRequestDto menuRequestDto) {
         log.info(":::메뉴 수정:::");
 
@@ -57,10 +55,9 @@ public class MenuController {
 
     // 메뉴 삭제
     @DeleteMapping("/{store_id}/menus/{menu_id}")
-    public ResponseEntity<?> deleteMenu(@PathVariable("store_id") Long store_id, @PathVariable("menu_id") Long menu_id) {
     public ResponseEntity<?> deleteMenu(@RequestHeader(JwtUtil.AUTHORIZATION_HEADER) String token,
                                         @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                        @PathVariable Long store_id, @PathVariable Long menu_id) {
+                                        @PathVariable("store_id") Long store_id, @PathVariable("menu_id") Long menu_id) {
         log.info(":::메뉴 삭제:::");
 
         ResponseEntity<?> response = checkStoreOwner(userDetails, store_id);
@@ -73,10 +70,9 @@ public class MenuController {
 
     // 메뉴 복원
     @PutMapping("/{store_id}/menus/{menu_id}/restore")
-    public ResponseEntity<?> restoreMenu(@PathVariable("store_id") Long store_id, @PathVariable("menu_id") Long menu_id) {
     public ResponseEntity<?> restoreMenu(@RequestHeader(JwtUtil.AUTHORIZATION_HEADER) String token,
                                          @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                         @PathVariable Long store_id, @PathVariable Long menu_id) {
+                                         @PathVariable("store_id") Long store_id, @PathVariable("menu_id") Long menu_id) {
         log.info(":::메뉴 복원:::");
 
         ResponseEntity<?> response = checkStoreOwner(userDetails, store_id);
@@ -99,7 +95,7 @@ public class MenuController {
                 .orElse("");
 
         // 소유자 확인
-        if (!store.getUser().getId().equals(userId) || !auth.equals("OWNER")) {
+        if (!store.getUsers().getId().equals(userId) || !auth.equals("OWNER")) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("접근 권한이 없습니다.");
         }
         return null; // 권한이 있을 경우 null 반환
