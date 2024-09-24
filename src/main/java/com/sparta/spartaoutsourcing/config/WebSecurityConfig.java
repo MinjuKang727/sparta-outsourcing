@@ -1,4 +1,4 @@
-package com.sparta.spartaoutsourcing.auth.config;
+package com.sparta.spartaoutsourcing.config;
 
 import com.sparta.spartaoutsourcing.auth.UserLogoutHandler;
 import com.sparta.spartaoutsourcing.auth.jwt.JwtAuthenticationFilter;
@@ -80,7 +80,7 @@ public class WebSecurityConfig {
         httpSecurity.authorizeHttpRequests(authorizeHttpRequests ->
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
         );
@@ -104,7 +104,6 @@ public class WebSecurityConfig {
                     .accessDeniedHandler(accessDeniedHandler())
         );
 
-        httpSecurity.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
         httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
