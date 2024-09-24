@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Getter
 @AllArgsConstructor
@@ -14,6 +13,7 @@ import java.time.LocalTime;
 public class OrderRequestDto {
 
     private int quantity;
+    private int totalPrice;
     private LocalDateTime orderTime;
 
 }
