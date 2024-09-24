@@ -1,4 +1,4 @@
-package com.sparta.spartaoutsourcing.auth.config;
+package com.sparta.spartaoutsourcing.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
