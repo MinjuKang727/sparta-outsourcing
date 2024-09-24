@@ -51,7 +51,7 @@ public class UserServiceTest {
         void 해당_이메일의_사용자가_이미_존재해서_에러_발생() {
             // given
             UserSignupRequestDto requestDto = spy(UserSignupRequestDto.class);
-            ReflectionTestUtils.setField(requestDto, "email", "rtan@sparta.com");
+            ReflectionTestUtils.setField(requestDto, "email", "Rtan@sparta.com");
 
             given(userRepository.existsByEmail(anyString())).willReturn(true);
 
@@ -69,7 +69,7 @@ public class UserServiceTest {
         void 사장님_권한_키_입력을_잘못해서_에러_발생() {
             // given
             UserSignupRequestDto requestDto = spy(UserSignupRequestDto.class);
-            ReflectionTestUtils.setField(requestDto, "email", "rtan@sparta.com");
+            ReflectionTestUtils.setField(requestDto, "email", "Rtan@sparta.com");
             ReflectionTestUtils.setField(requestDto, "isOwner", true);
             ReflectionTestUtils.setField(requestDto, "ownerKey", "wrongOwnerKey");
 
@@ -90,7 +90,7 @@ public class UserServiceTest {
         void USER_권한으로_회원가입_성공() throws UserException {
             // given
             UserSignupRequestDto requestDto = spy(UserSignupRequestDto.class);
-            ReflectionTestUtils.setField(requestDto, "email", "rtan@sparta.com");
+            ReflectionTestUtils.setField(requestDto, "email", "Rtan@sparta.com");
             ReflectionTestUtils.setField(requestDto, "password", "spart123!");
             ReflectionTestUtils.setField(requestDto, "isOwner", false);
             User savedUser = new User(requestDto, "encodedPassword", UserRole.USER);
@@ -119,7 +119,7 @@ public class UserServiceTest {
         void OWNER_권한으로_회원가입_성공() throws UserException {
             // given
             UserSignupRequestDto requestDto = spy(UserSignupRequestDto.class);
-            ReflectionTestUtils.setField(requestDto, "email", "rtan@sparta.com");
+            ReflectionTestUtils.setField(requestDto, "email", "Rtan@sparta.com");
             ReflectionTestUtils.setField(requestDto, "password", "spart123!");
             ReflectionTestUtils.setField(requestDto, "isOwner", true);
             ReflectionTestUtils.setField(requestDto, "ownerKey", ownerKey);
@@ -194,8 +194,8 @@ public class UserServiceTest {
             // given
             User user = spy(User.class);
             ReflectionTestUtils.setField(user, "id", 1L);
-            ReflectionTestUtils.setField(user, "email", "rtan@sparta.com");
-            ReflectionTestUtils.setField(user, "username", "rtan");
+            ReflectionTestUtils.setField(user, "email", "Rtan@sparta.com");
+            ReflectionTestUtils.setField(user, "username", "Rtan");
             ReflectionTestUtils.setField(user, "role", UserRole.USER);
 
             UserResponseDto responseDto = new UserResponseDto(user);
