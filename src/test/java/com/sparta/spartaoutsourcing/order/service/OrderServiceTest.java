@@ -3,20 +3,16 @@ package com.sparta.spartaoutsourcing.order.service;
 
 import com.sparta.spartaoutsourcing.basket.entity.Basket;
 import com.sparta.spartaoutsourcing.basket.repository.BasketRepository;
-import com.sparta.spartaoutsourcing.category.entity.Category;
 import com.sparta.spartaoutsourcing.menu.entity.Menu;
 import com.sparta.spartaoutsourcing.menu.repository.MenuRepository;
 import com.sparta.spartaoutsourcing.order.dto.OrderRequestDto;
 import com.sparta.spartaoutsourcing.order.dto.OrderResponseDto;
 import com.sparta.spartaoutsourcing.order.entity.Order;
-import com.sparta.spartaoutsourcing.order.entity.OrderState;
 import com.sparta.spartaoutsourcing.order.repository.OrderRepository;
 import com.sparta.spartaoutsourcing.store.entity.Store;
 import com.sparta.spartaoutsourcing.store.repository.StoreRepository;
 import com.sparta.spartaoutsourcing.user.entity.User;
 import com.sparta.spartaoutsourcing.user.enums.UserRole;
-import com.sparta.spartaoutsourcing.user.repository.UserRepository;
-import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,7 +20,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +28,8 @@ import java.util.Optional;
 import static com.sparta.spartaoutsourcing.order.entity.OrderState.REQUEST_ORDER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,15 +58,15 @@ public class OrderServiceTest {
         long menuId = 1L;
         long orderId = 1L;
 
-        User user = new User("jitaek", "l3259120","jitaek@naver.com", UserRole.USER, 1L);
+        User user = new User("jitaek", "l3259120", "jitaek@naver.com", UserRole.USER, 1L);
         ReflectionTestUtils.setField(user, "id", userId);
-        Store store = new Store(user,"jitaek_store", LocalTime.of(15,30), LocalTime.of(21,30), "15000", false);
+        Store store = new Store(user, "jitaek_store", LocalTime.of(15, 30), LocalTime.of(21, 30), "15000", false);
         ReflectionTestUtils.setField(store, "id", storeId);
         Menu menu = new Menu(store, "햄버거", 8000);
         ReflectionTestUtils.setField(menu, "id", menuId);
         Order order = new Order(user, store, menu, 3, REQUEST_ORDER);
         ReflectionTestUtils.setField(order, "id", orderId);
-        OrderRequestDto orderRequestDto = new OrderRequestDto(5, LocalTime.of(15, 15, 30));
+        OrderRequestDto orderRequestDto = new OrderRequestDto(5, LocalTime.of(15, 15, 30), 0);
 
         given(storeRepository.findById(anyLong())).willReturn(Optional.of(store));
         given(menuRepository.findById(anyLong())).willReturn(Optional.of(menu));
@@ -91,9 +87,9 @@ public class OrderServiceTest {
         long userId = 1L;
         long storeId = 1L;
         long menuId = 1L;
-        User user = new User("jitaek", "l3259120","jitaek@naver.com", UserRole.USER, 1L);
+        User user = new User("jitaek", "l3259120", "jitaek@naver.com", UserRole.USER, 1L);
         ReflectionTestUtils.setField(user, "id", userId);
-        Store store = new Store(user,"jitaek_store", LocalTime.of(15,30), LocalTime.of(21,30), "15000", false);
+        Store store = new Store(user, "jitaek_store", LocalTime.of(15, 30), LocalTime.of(21, 30), "15000", false);
         ReflectionTestUtils.setField(store, "id", storeId);
         Menu menu = new Menu(store, "햄버거", 8000);
         ReflectionTestUtils.setField(menu, "id", menuId);
@@ -118,7 +114,7 @@ public class OrderServiceTest {
         });
 
         // when
-        List<OrderResponseDto> orderResponseDtos = orderService.orderBasket(user);
+        List<OrderResponseDto> orderResponseDtos = orderService.orderBasket(user, 0);
 
         // then
         assertNotNull(orderResponseDtos); // 주문이 null이 아닌지 확인
@@ -129,7 +125,6 @@ public class OrderServiceTest {
 
 
     }
-
 
 
 }
