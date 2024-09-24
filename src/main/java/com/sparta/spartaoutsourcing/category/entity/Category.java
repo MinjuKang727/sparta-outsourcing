@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,7 +23,7 @@ public class Category {
     private Boolean isDeleted = false;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Menu> menus;
+    private List<Menu> menus = new ArrayList<>(); ;
 
     public Category(String name) { this.name = name; }
 

@@ -27,7 +27,7 @@ public class StoreController {
 
 //    가게 단건 조회
     @GetMapping("/{storeId}")
-    public ResponseEntity<Store> getStore(@PathVariable("storeId") Long storeId) {
+    public ResponseEntity<StoreResponseDto> getStore(@PathVariable("storeId") Long storeId) {
         return ResponseEntity.ok(storeService.getStore(storeId));
     }
 

@@ -8,5 +8,5 @@ import java.util.List;
 public interface OptionGroupRepository extends JpaRepository<OptionGroup, Long> {
     boolean existsByName(String name);
 
-    List<OptionGroup> findByIsDeleted(boolean b);
+    List<OptionGroup> findByIsDeletedFalseAndOwnerId(Long ownerId);
 }
