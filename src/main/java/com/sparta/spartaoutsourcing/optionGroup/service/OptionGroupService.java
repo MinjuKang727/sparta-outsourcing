@@ -139,7 +139,7 @@ public class OptionGroupService {
     public Long findMenuOwnerIdById(Long menuId) {
         Menu menu = menuRepository.findById(menuId)
                 .orElseThrow(() -> new NotFoundException("해당 메뉴를 찾을 수 없습니다."));
-        return menu.getStore().getUser().getId(); // 예시로 가게 소유자 ID를 반환
+        return menu.getStore().getUsers().getId(); // 예시로 가게 소유자 ID를 반환
     }
 
     // 그룹 조회

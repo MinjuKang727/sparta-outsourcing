@@ -25,7 +25,7 @@ public class BasketController {
     @PostMapping("/baskets/menus/{menuId}")
     public void addBasket(
             @RequestBody BasketRequestDto dto,
-            @PathVariable Long menuId,
+            @PathVariable("menuId") Long menuId,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         basketService.addBasket(userDetails.getUser(), menuId, dto);
@@ -44,7 +44,7 @@ public class BasketController {
     @PutMapping("/baskets/menus/{menuId}")
     public void updateBasket(
             @RequestBody BasketRequestDto dto,
-            @PathVariable Long menuId,
+            @PathVariable("menuId") Long menuId,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         basketService.updateBasket(userDetails.getUser(), menuId, dto);
