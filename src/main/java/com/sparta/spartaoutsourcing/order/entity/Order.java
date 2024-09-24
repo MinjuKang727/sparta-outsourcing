@@ -2,6 +2,8 @@ package com.sparta.spartaoutsourcing.order.entity;
 
 
 import com.sparta.spartaoutsourcing.menu.entity.Menu;
+import com.sparta.spartaoutsourcing.review.entity.Review;
+import com.sparta.spartaoutsourcing.review.entity.ReviewComment;
 import com.sparta.spartaoutsourcing.store.entity.Store;
 import com.sparta.spartaoutsourcing.user.entity.User;
 import jakarta.persistence.*;
@@ -46,6 +48,9 @@ public class Order {
 
     @Column(name = "total_price")
     private Long totalPrice;
+  
+    @OneToOne(optional = true, mappedBy = "order")
+    Review review;
 
     @CreatedDate
     @Column(updatable = false)

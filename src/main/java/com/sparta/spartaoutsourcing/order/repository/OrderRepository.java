@@ -3,10 +3,13 @@ package com.sparta.spartaoutsourcing.order.repository;
 import com.sparta.spartaoutsourcing.order.entity.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+
+import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
@@ -29,4 +32,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT SUM(o.totalPrice) FROM Order o WHERE o.store.id = :storeId AND YEAR(o.createdAt) = YEAR(CURRENT_DATE) AND MONTH(o.createdAt) = MONTH(CURRENT_DATE)")
     Long sumMonthlySales(@Param("storeId") Long storeId);
 
+    @EntityGraph(attributePaths = {"review", "review.reviewComment"})
+    List<Order> findByStore_IdAndReviewIsNotNullAndReview_RatingBetween(Long store_id, Integer min, Integer max);
 }
