@@ -39,7 +39,6 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final StoreRepository storeRepository;
     private final MenuRepository menuRepository;
-    private final UserRepository userRepository;
     private final BasketRepository basketRepository;
 
     // 단건 주문
@@ -49,7 +48,7 @@ public class OrderService {
                 new NullPointerException("가게가 존재하지 않습니다."));
 
         // 영업시간 확인
-        if (dto.getOrderTime().toLocalTime().isBefore(store.getOpenTime()) || dto.getOrderTime().toLocalTime().isAfter(store.getCloseTime())) {
+        if (dto.getOrderTime().isBefore(store.getOpenTime()) || dto.getOrderTime().isAfter(store.getCloseTime())) {
             throw new IllegalArgumentException("영업시간이 아닙니다.");
         }
 
@@ -77,6 +76,14 @@ public class OrderService {
 
         List<Basket> basketList = basketRepository.findByUserId(user.getId());
 
+//        LocalTime localTime = LocalTime.now();
+
+//        // 영업시간 확인
+//        if (localTime.isBefore(basketList.get(0).getStore().getOpenTime()) ||
+//                localTime.isAfter(basketList.get(0).getStore().getCloseTime())) {
+//            throw new IllegalArgumentException("영업시간이 아닙니다.");
+//        }
+
         // 주문 금액 합
         Long totalPriceAll = 0L;
         for (Basket basket : basketList) {
@@ -93,7 +100,6 @@ public class OrderService {
             Order order = new Order(basket.getUser(), basket.getStore(), basket.getMenu(), basket.getQuantity(),
                     OrderState.REQUEST_ORDER);
             Order savedOrder = orderRepository.save(order);
-            Long totalPrice = (long) order.getQuantity() * basket.getMenu().getPrice();
 
                 OrderResponseDto orderResponseDto = new OrderResponseDto(savedOrder);
                 orderResponseDtoList.add(orderResponseDto);
@@ -102,6 +108,7 @@ public class OrderService {
         return orderResponseDtoList;
     }
 
+    // 주문상태 업데이트
     public OrderStateResponseDto updateOrder(Long storeId, Long orderId, User user, OrderStateRequestDto dto) {
 
         Store store = storeRepository.findById(storeId).orElseThrow(() ->
@@ -128,6 +135,7 @@ public class OrderService {
         );
     }
 
+    // 주문목록 조회
     public List<OrderResponseDto> getOrders(Long userId, int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("modifiedAt").descending());
         Page<Order> orders = orderRepository.findByUserId(userId, pageable);

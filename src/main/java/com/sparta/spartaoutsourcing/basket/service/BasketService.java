@@ -50,7 +50,7 @@ public class BasketService {
                 }
             }
         }
-        Basket basketSaved = new Basket(user, menu, store, dto.getQuantity());
+        Basket basketSaved = new Basket(user, store, menu, dto.getQuantity());
         basketRepository.save(basketSaved);
 
     }
@@ -63,7 +63,7 @@ public class BasketService {
         Menu menu = menuRepository.findById(menuId).orElseThrow(() -> new NullPointerException("해당 메뉴가 존재하지 않습니다."));
         Store store = menu.getStore();
 
-        Basket basketSaved = new Basket(user, menu, store, dto.getQuantity());
+        Basket basketSaved = new Basket(user, store, menu, dto.getQuantity());
         basketRepository.save(basketSaved);
 
     }

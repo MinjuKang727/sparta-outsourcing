@@ -14,6 +14,6 @@ import java.time.LocalTime;
 public class OrderRequestDto {
 
     private int quantity;
-    private LocalDateTime orderTime;
+    private LocalTime orderTime;
 
 }

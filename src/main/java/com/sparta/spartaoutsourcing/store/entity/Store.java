@@ -50,6 +50,14 @@ public class Store {
         this.minOrderPrice = storeRequestDto.getMinOrderPrice();
     }
 
+    public Store(User user, String storeName, LocalTime openTime, LocalTime closeTime, String minOrderPrice, boolean isClose) {
+        this.users = user;
+        this.storeName = storeName;
+        this.openTime = openTime;
+        this.closeTime = closeTime;
+        this.minOrderPrice = minOrderPrice;
+        this.isClose = isClose;
+    }
 
 
     public void update(String storeName,LocalTime openTime,LocalTime closeTime,String minOrderPrice) {
