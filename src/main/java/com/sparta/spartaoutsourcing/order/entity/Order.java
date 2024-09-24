@@ -46,6 +46,9 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderState state;
 
+    @Column(name = "total_price")
+    private Long totalPrice;
+  
     @OneToOne(optional = true, mappedBy = "order")
     Review review;
 
@@ -64,6 +67,7 @@ public class Order {
         this.store = store;
         this.menu = menu;
         this.quantity = quantity;
+        this.totalPrice = ((long) menu.getPrice() * quantity);
         this.state = state;
     }
 

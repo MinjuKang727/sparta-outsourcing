@@ -1,12 +1,10 @@
 package com.sparta.spartaoutsourcing.store.controller;
 
 import com.sparta.spartaoutsourcing.store.dto.favorites.FavoritesResponseDto;
-import com.sparta.spartaoutsourcing.store.dto.store.StoreResponseDto;
 import com.sparta.spartaoutsourcing.store.service.FavoritesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

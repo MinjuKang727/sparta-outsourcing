@@ -80,7 +80,7 @@ public class WebSecurityConfig {
         httpSecurity.authorizeHttpRequests(authorizeHttpRequests ->
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
         );

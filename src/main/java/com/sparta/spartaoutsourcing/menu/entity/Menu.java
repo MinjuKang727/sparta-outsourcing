@@ -47,6 +47,12 @@ public class Menu {
         this.price = price;
     }
 
+    public Menu(Store store, String menu, int price) {
+        this.store = store;
+        this.menuName = menu;
+        this.price = price;
+    }
+
 
     public void update(String menu, int price) {
         this.menuName = menu;

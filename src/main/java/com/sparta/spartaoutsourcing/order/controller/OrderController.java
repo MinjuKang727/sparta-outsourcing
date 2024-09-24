@@ -25,8 +25,8 @@ public class OrderController {
     // 단건 주문
     @PostMapping("/stores/{storeId}/menus/{menuId}/orders")
     public ResponseEntity<OrderResponseDto> createOrder(
-            @PathVariable Long storeId, @PathVariable Long menuId,
             @RequestBody @Valid OrderRequestDto dto,
+            @PathVariable("storeId") Long storeId, @PathVariable("menuId") Long menuId,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         OrderResponseDto responseDto = orderService.createOrder(userDetails.getUser(), storeId, menuId, dto);
@@ -46,8 +46,8 @@ public class OrderController {
     // 주문상태 업데이트
     @PutMapping("/stores/{storeId}/orders/{orderId}")
     public ResponseEntity<OrderStateResponseDto> updateOrder(
-            @PathVariable Long storeId,
-            @PathVariable Long orderId,
+            @PathVariable("storeId") Long storeId,
+            @PathVariable("orderId") Long orderId,
             @RequestBody OrderStateRequestDto dto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
