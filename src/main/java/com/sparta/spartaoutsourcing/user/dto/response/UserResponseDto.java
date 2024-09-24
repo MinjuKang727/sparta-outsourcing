@@ -17,4 +17,11 @@ public class UserResponseDto {
         this.username = user.getUsername();
         this.role = user.getRole();
     }
+
+    public UserResponseDto(Long id, String email, String username, UserRole role) {
+        this.id = id;
+        this.email = email;
+        this.username = username;
+        this.role = role;
+    }
 }
