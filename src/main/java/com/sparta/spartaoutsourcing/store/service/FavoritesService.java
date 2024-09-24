@@ -12,6 +12,7 @@ import com.sparta.spartaoutsourcing.store.repository.StoreRepository;
 import com.sparta.spartaoutsourcing.user.entity.User;
 import com.sparta.spartaoutsourcing.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FavoritesService {
 
     private final FavoritesRepository favoritesRepository;
@@ -44,13 +46,14 @@ public class FavoritesService {
             favorites = new Favorites(user, store);
             favorites.setFavorite(true);
             favoritesRepository.save(favorites);
+            log.info("가게를 즐겨찾기 하였습니다");
         }else{
 //            즐겨찾기에 이미 있으면 비활성화
             favorites = favoritesOptional.get();
             favorites.setFavorite(!favorites.isFavorite());
             favoritesRepository.save(favorites);
+            log.info("즐겨찾기를 해지하였습니다");
         }
-
     }
 
     //    즐겨찾기 목록
