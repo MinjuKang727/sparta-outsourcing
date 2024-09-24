@@ -7,9 +7,13 @@ import com.sparta.spartaoutsourcing.user.dto.request.KakaoUserInfoDto;
 import com.sparta.spartaoutsourcing.user.dto.response.UserResponseDto;
 import com.sparta.spartaoutsourcing.user.entity.User;
 import com.sparta.spartaoutsourcing.user.enums.UserRole;
+import com.sparta.spartaoutsourcing.user.exception.UserException;
 import com.sparta.spartaoutsourcing.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
@@ -22,6 +26,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.lang.annotation.Documented;
 import java.net.URI;
 import java.util.UUID;
 
@@ -37,9 +42,9 @@ public class KakaoService {
     @Value("${rest.api.key}")
     private String clientId;
 
-    public RedirectView kakaoLogin() {
+    public String kakaoLogin() {
         // 요청 URL 만들기
-        String kakaoAuthUrl = UriComponentsBuilder
+        String kakaoAuthURL = UriComponentsBuilder
                 .fromUriString("https://kauth.kakao.com")
                 .path("/oauth/authorize")
                 .queryParam("client_id", clientId)
@@ -47,11 +52,10 @@ public class KakaoService {
                 .queryParam("response_type", "code")
                 .build()
                 .toString();
-
-        return new RedirectView(kakaoAuthUrl);
+        return kakaoAuthURL;
     }
 
-    public UserResponseDto kakaoLogin(String code) throws JsonProcessingException {
+    public UserResponseDto kakaoLoginCallback(String code) throws JsonProcessingException {
         log.info("kakaoLogin() 메서드 실행");
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getToken(code);
