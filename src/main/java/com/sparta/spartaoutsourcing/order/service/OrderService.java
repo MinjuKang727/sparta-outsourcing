@@ -5,6 +5,7 @@ import com.sparta.spartaoutsourcing.basket.entity.Basket;
 import com.sparta.spartaoutsourcing.basket.repository.BasketRepository;
 import com.sparta.spartaoutsourcing.menu.entity.Menu;
 import com.sparta.spartaoutsourcing.menu.repository.MenuRepository;
+import com.sparta.spartaoutsourcing.notification.service.NotificationService;
 import com.sparta.spartaoutsourcing.order.dto.OrderRequestDto;
 import com.sparta.spartaoutsourcing.order.dto.OrderResponseDto;
 import com.sparta.spartaoutsourcing.order.dto.OrderStateRequestDto;
@@ -42,6 +43,7 @@ public class OrderService {
     private final BasketRepository basketRepository;
 
     private final PointService pointService;
+    private final NotificationService notificationService;
 
     // 단건 주문
     @Transactional
@@ -77,6 +79,7 @@ public class OrderService {
             }
             pointService.updatePoints(user.getId(), -dto.getUsedPoint());
         }
+        notificationService.createOrderNotification(user.getId(), order.getState());
 
         return new OrderResponseDto(order);
     }
@@ -125,6 +128,7 @@ public class OrderService {
             }
             pointService.updatePoints(user.getId(), -usedPoint);
         }
+        notificationService.createOrderNotification(user.getId(), OrderState.REQUEST_ORDER);
 
         basketRepository.deleteAll(basketList);
         return orderResponseDtoList;
@@ -150,6 +154,8 @@ public class OrderService {
             throw new IllegalArgumentException("해당 가게의 주문이 아닙니다.");
         }
         order.updateState(dto.getState());
+
+        notificationService.createOrderNotification(user.getId(), dto.getState());
 
         if (dto.getState().equals(OrderState.DELIVERED)) {
             pointService.updatePoints(user.getId(), (int) ((order.getQuantity() * order.getMenu().getPrice()) * 0.03));
