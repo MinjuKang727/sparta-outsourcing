@@ -5,6 +5,7 @@ import com.sparta.spartaoutsourcing.basket.entity.Basket;
 import com.sparta.spartaoutsourcing.basket.repository.BasketRepository;
 import com.sparta.spartaoutsourcing.menu.entity.Menu;
 import com.sparta.spartaoutsourcing.menu.repository.MenuRepository;
+import com.sparta.spartaoutsourcing.notification.service.NotificationService;
 import com.sparta.spartaoutsourcing.order.dto.OrderRequestDto;
 import com.sparta.spartaoutsourcing.order.dto.OrderResponseDto;
 import com.sparta.spartaoutsourcing.order.entity.Order;
@@ -47,6 +48,9 @@ public class OrderServiceTest {
     @Mock
     private BasketRepository basketRepository;
 
+    @Mock
+    private NotificationService notificationService;
+
     @InjectMocks
     private OrderService orderService;
 
@@ -66,7 +70,7 @@ public class OrderServiceTest {
         ReflectionTestUtils.setField(menu, "id", menuId);
         Order order = new Order(user, store, menu, 3, REQUEST_ORDER);
         ReflectionTestUtils.setField(order, "id", orderId);
-        OrderRequestDto orderRequestDto = new OrderRequestDto(5, LocalTime.of(15, 15, 30), 0);
+        OrderRequestDto orderRequestDto = new OrderRequestDto(5, LocalTime.of(15, 30, 30), 0);
 
         given(storeRepository.findById(anyLong())).willReturn(Optional.of(store));
         given(menuRepository.findById(anyLong())).willReturn(Optional.of(menu));
