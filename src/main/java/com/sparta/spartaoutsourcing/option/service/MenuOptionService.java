@@ -116,4 +116,11 @@ public class MenuOptionService {
                 .map(MenuOptionResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+    // 옵션 ID에 해당하는 옵션 그룹 ID
+    public Long getOptionGroupIdByOptionId(Long optionId) {
+        MenuOption menuOption = menuOptionRepository.findById(optionId)
+                .orElseThrow(() -> new NotFoundException("해당 옵션을 찾을 수 없습니다."));
+        return menuOption.getOptionGroup().getId();
+    }
 }

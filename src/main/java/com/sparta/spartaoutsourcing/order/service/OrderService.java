@@ -5,6 +5,7 @@ import com.sparta.spartaoutsourcing.basket.entity.Basket;
 import com.sparta.spartaoutsourcing.basket.repository.BasketRepository;
 import com.sparta.spartaoutsourcing.menu.entity.Menu;
 import com.sparta.spartaoutsourcing.menu.repository.MenuRepository;
+import com.sparta.spartaoutsourcing.notification.service.NotificationService;
 import com.sparta.spartaoutsourcing.order.dto.OrderRequestDto;
 import com.sparta.spartaoutsourcing.order.dto.OrderResponseDto;
 import com.sparta.spartaoutsourcing.order.dto.OrderStateRequestDto;
@@ -12,6 +13,7 @@ import com.sparta.spartaoutsourcing.order.dto.OrderStateResponseDto;
 import com.sparta.spartaoutsourcing.order.entity.Order;
 import com.sparta.spartaoutsourcing.order.entity.OrderState;
 import com.sparta.spartaoutsourcing.order.repository.OrderRepository;
+import com.sparta.spartaoutsourcing.point.service.PointService;
 import com.sparta.spartaoutsourcing.store.entity.Store;
 import com.sparta.spartaoutsourcing.store.repository.StoreRepository;
 import com.sparta.spartaoutsourcing.user.entity.User;
@@ -19,15 +21,14 @@ import com.sparta.spartaoutsourcing.user.enums.UserRole;
 import com.sparta.spartaoutsourcing.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,17 +40,20 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final StoreRepository storeRepository;
     private final MenuRepository menuRepository;
-    private final UserRepository userRepository;
     private final BasketRepository basketRepository;
 
+    private final PointService pointService;
+    private final NotificationService notificationService;
+
     // 단건 주문
+    @Transactional
     public OrderResponseDto createOrder(User user, Long storeId, Long menuId, OrderRequestDto dto) {
         // 가게 조회
         Store store = storeRepository.findById(storeId).orElseThrow(() ->
                 new NullPointerException("가게가 존재하지 않습니다."));
 
         // 영업시간 확인
-        if (dto.getOrderTime().toLocalTime().isBefore(store.getOpenTime()) || dto.getOrderTime().toLocalTime().isAfter(store.getCloseTime())) {
+        if (dto.getOrderTime().isBefore(store.getOpenTime()) || dto.getOrderTime().isAfter(store.getCloseTime())) {
             throw new IllegalArgumentException("영업시간이 아닙니다.");
         }
 
@@ -68,14 +72,31 @@ public class OrderService {
         if (totalPrice < Long.parseLong(store.getMinOrderPrice())) {
             throw new IllegalArgumentException("최소 주문 금액보다 낮습니다.");
         }
+
+        if (dto.getUsedPoint() > 0) {
+            if (totalPrice < dto.getUsedPoint()) {
+                throw new IllegalArgumentException("주문 금액보다 포인트를 많이 사용할 수 없습니다.");
+            }
+            pointService.updatePoints(user.getId(), -dto.getUsedPoint());
+        }
+        notificationService.createOrderNotification(user.getId(), order.getState());
+
         return new OrderResponseDto(order);
     }
 
 
     // 장바구니 전부 주문
-    public List<OrderResponseDto> orderBasket(User user) {
+    public List<OrderResponseDto> orderBasket(User user, Integer usedPoint) {
 
         List<Basket> basketList = basketRepository.findByUserId(user.getId());
+
+//        LocalTime localTime = LocalTime.now();
+
+//        // 영업시간 확인
+//        if (localTime.isBefore(basketList.get(0).getStore().getOpenTime()) ||
+//                localTime.isAfter(basketList.get(0).getStore().getCloseTime())) {
+//            throw new IllegalArgumentException("영업시간이 아닙니다.");
+//        }
 
         // 주문 금액 합
         Long totalPriceAll = 0L;
@@ -88,20 +109,33 @@ public class OrderService {
         }
 
         List<OrderResponseDto> orderResponseDtoList = new ArrayList<>();
+        int sumTotalPrice = 0;
 
         for (Basket basket : basketList) {
             Order order = new Order(basket.getUser(), basket.getStore(), basket.getMenu(), basket.getQuantity(),
                     OrderState.REQUEST_ORDER);
             Order savedOrder = orderRepository.save(order);
             Long totalPrice = (long) order.getQuantity() * basket.getMenu().getPrice();
+            sumTotalPrice += totalPrice;
 
-                OrderResponseDto orderResponseDto = new OrderResponseDto(savedOrder);
-                orderResponseDtoList.add(orderResponseDto);
+            OrderResponseDto orderResponseDto = new OrderResponseDto(savedOrder);
+            orderResponseDtoList.add(orderResponseDto);
         }
+
+        if (usedPoint > 0) {
+            if (sumTotalPrice < usedPoint) {
+                throw new IllegalArgumentException("주문 금액보다 포인트를 많이 사용할 수 없습니다.");
+            }
+            pointService.updatePoints(user.getId(), -usedPoint);
+        }
+        notificationService.createOrderNotification(user.getId(), OrderState.REQUEST_ORDER);
+
         basketRepository.deleteAll(basketList);
         return orderResponseDtoList;
     }
-
+  
+    // 주문상태 업데이트
+    @Transactional
     public OrderStateResponseDto updateOrder(Long storeId, Long orderId, User user, OrderStateRequestDto dto) {
 
         Store store = storeRepository.findById(storeId).orElseThrow(() ->
@@ -120,6 +154,13 @@ public class OrderService {
             throw new IllegalArgumentException("해당 가게의 주문이 아닙니다.");
         }
         order.updateState(dto.getState());
+
+        notificationService.createOrderNotification(user.getId(), dto.getState());
+
+        if (dto.getState().equals(OrderState.DELIVERED)) {
+            pointService.updatePoints(user.getId(), (int) ((order.getQuantity() * order.getMenu().getPrice()) * 0.03));
+        }
+
         Order savedOrder = orderRepository.save(order);
         return new OrderStateResponseDto(
                 savedOrder.getId(),
@@ -128,6 +169,7 @@ public class OrderService {
         );
     }
 
+    // 주문목록 조회
     public List<OrderResponseDto> getOrders(Long userId, int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("modifiedAt").descending());
         Page<Order> orders = orderRepository.findByUserId(userId, pageable);

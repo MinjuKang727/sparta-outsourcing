@@ -6,12 +6,14 @@ import com.sparta.spartaoutsourcing.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class Menu {
     @Id
@@ -43,6 +45,12 @@ public class Menu {
     public Menu(Store store, Category category, String menu, int price) {
         this.store = store;
         this.category = category;
+        this.menuName = menu;
+        this.price = price;
+    }
+
+    public Menu(Store store, String menu, int price) {
+        this.store = store;
         this.menuName = menu;
         this.price = price;
     }

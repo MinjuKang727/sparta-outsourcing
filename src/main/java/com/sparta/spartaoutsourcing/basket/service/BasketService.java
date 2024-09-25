@@ -50,7 +50,7 @@ public class BasketService {
                 }
             }
         }
-        Basket basketSaved = new Basket(user, menu, store, dto.getQuantity());
+        Basket basketSaved = new Basket(user, store, menu, dto.getQuantity());
         basketRepository.save(basketSaved);
 
     }
@@ -63,11 +63,12 @@ public class BasketService {
         Menu menu = menuRepository.findById(menuId).orElseThrow(() -> new NullPointerException("해당 메뉴가 존재하지 않습니다."));
         Store store = menu.getStore();
 
-        Basket basketSaved = new Basket(user, menu, store, dto.getQuantity());
+        Basket basketSaved = new Basket(user, store, menu, dto.getQuantity());
         basketRepository.save(basketSaved);
 
     }
 
+    // 장바구니 조회
     public List<BasketResponseDto> getBasket(User user) {
         List<Basket> basketList = basketRepository.findByUserId(user.getId());
 
@@ -80,6 +81,8 @@ public class BasketService {
         return basketResponseDtoList;
     }
 
+    // 장바구니 삭제
+    @Transactional
     public void deleteBasket(User user) {
         basketRepository.deleteByUserId(user.getId());
     }

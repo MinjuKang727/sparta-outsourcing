@@ -2,11 +2,9 @@ package com.sparta.spartaoutsourcing.order.controller;
 
 
 import com.sparta.spartaoutsourcing.auth.security.UserDetailsImpl;
-import com.sparta.spartaoutsourcing.order.dto.OrderRequestDto;
-import com.sparta.spartaoutsourcing.order.dto.OrderResponseDto;
-import com.sparta.spartaoutsourcing.order.dto.OrderStateRequestDto;
-import com.sparta.spartaoutsourcing.order.dto.OrderStateResponseDto;
+import com.sparta.spartaoutsourcing.order.dto.*;
 import com.sparta.spartaoutsourcing.order.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +25,8 @@ public class OrderController {
     // 단건 주문
     @PostMapping("/stores/{storeId}/menus/{menuId}/orders")
     public ResponseEntity<OrderResponseDto> createOrder(
-            @PathVariable Long storeId, @PathVariable Long menuId,
-            @RequestBody OrderRequestDto dto,
+            @RequestBody @Valid OrderRequestDto dto,
+            @PathVariable("storeId") Long storeId, @PathVariable("menuId") Long menuId,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         OrderResponseDto responseDto = orderService.createOrder(userDetails.getUser(), storeId, menuId, dto);
@@ -38,20 +36,21 @@ public class OrderController {
     // 장바구니 주문
     @PostMapping("/baskets/orders")
     public ResponseEntity<List<OrderResponseDto>> orderBasket(
+            @RequestBody @Valid BasketOrderRequestDto basketOrderRequestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        List<OrderResponseDto> responseDtos = orderService.orderBasket(userDetails.getUser());
+        List<OrderResponseDto> responseDtos = orderService.orderBasket(userDetails.getUser(), basketOrderRequestDto.getUsedPoint());
         return ResponseEntity.ok(responseDtos);
     }
 
     // 주문상태 업데이트
     @PutMapping("/stores/{storeId}/orders/{orderId}")
     public ResponseEntity<OrderStateResponseDto> updateOrder(
-            @PathVariable Long storeId,
-            @PathVariable Long orderId,
+            @PathVariable("storeId") Long storeId,
+            @PathVariable("orderId") Long orderId,
             @RequestBody OrderStateRequestDto dto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
-    ){
+    ) {
         OrderStateResponseDto responseDto = orderService.updateOrder(storeId, orderId, userDetails.getUser(), dto);
         return ResponseEntity.ok(responseDto);
     }
@@ -66,7 +65,6 @@ public class OrderController {
         List<OrderResponseDto> responseDtos = orderService.getOrders(userDetails.getUser().getId(), pageNo, pageSize);
         return ResponseEntity.ok(responseDtos);
     }
-
 
 
 }

@@ -15,6 +15,7 @@ import com.sparta.spartaoutsourcing.optionGroup.entity.OptionGroup;
 import com.sparta.spartaoutsourcing.optionGroup.repository.OptionGroupRepository;
 import com.sparta.spartaoutsourcing.store.entity.Store;
 import com.sparta.spartaoutsourcing.store.repository.StoreRepository;
+import com.sparta.spartaoutsourcing.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class MenuService {
 
 
     // 메뉴 생성
-    public MenuResponseDto createMenu(Long store_id, MenuRequestDto menuRequestDto) {
+    public MenuResponseDto createMenu(Long store_id, MenuRequestDto menuRequestDto, User owner) {
         log.info("createMenu() 메서드 실행");
 
         // 가게 존재 유무 확인
@@ -70,7 +71,7 @@ public class MenuService {
         // 옵션 그룹과 옵션 생성
         if (menuRequestDto.getOptionGroups() != null) {
             for (var groupDto : menuRequestDto.getOptionGroups()) {
-                OptionGroup optionGroup = new OptionGroup(groupDto.getName(), menu); // 메뉴 포함
+                OptionGroup optionGroup = new OptionGroup(groupDto.getName(), menu, owner); // 메뉴 포함
                 optionGroupRepository.save(optionGroup); // 옵션 그룹 저장
 
                 for (var optionDto : groupDto.getOptions()) {
@@ -89,7 +90,7 @@ public class MenuService {
     }
 
     // 메뉴 수정
-    public MenuResponseDto updateMenu(Long store_id, Long menu_id, MenuRequestDto menuRequestDto) {
+    public MenuResponseDto updateMenu(Long store_id, Long menu_id, MenuRequestDto menuRequestDto, User owner) {
         log.info("updateMenu() 메서드 실행");
 
         Menu menu = menuRepository.findById(menu_id)
@@ -142,7 +143,7 @@ public class MenuService {
                     }
                 } else {
                     // 새 옵션 그룹 추가
-                    OptionGroup newGroup = new OptionGroup(groupDto.getName(), menu);
+                    OptionGroup newGroup = new OptionGroup(groupDto.getName(), menu, owner);
                     optionGroupRepository.save(newGroup);
 
                     // 새 옵션 추가
@@ -200,7 +201,7 @@ public class MenuService {
     }
 
     // 메뉴 복원
-    public void updateMenu(Long store_id, Long menu_id) {
+    public void restoreMenu(Long store_id, Long menu_id) {
         log.info("updateMenu() 메서드 실행");
 
         Menu menu = menuRepository.findById(menu_id)
