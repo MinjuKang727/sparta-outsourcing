@@ -1,4 +1,4 @@
-package com.sparta.spartaoutsourcing.domian.user.service;
+package com.sparta.spartaoutsourcing.user.service;
 
 import com.sparta.spartaoutsourcing.auth.jwt.JwtUtil;
 import com.sparta.spartaoutsourcing.user.dto.request.UserDeleteRequestDto;

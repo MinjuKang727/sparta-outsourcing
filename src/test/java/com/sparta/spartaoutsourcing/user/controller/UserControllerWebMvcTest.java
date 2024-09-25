@@ -1,4 +1,4 @@
-package com.sparta.spartaoutsourcing.domian.user.controller;
+package com.sparta.spartaoutsourcing.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.spartaoutsourcing.auth.JwtTestUtil;
@@ -105,60 +105,6 @@ public class UserControllerWebMvcTest {
             // then
             resultActions.andExpect(status().isBadRequest());
         }
-
-
-//        @Test
-//        @WithMockUser
-//        void 회원정보_DB에서_삭제_실패해서_에러_발생() throws Exception {
-//            UserDeleteRequestDto requestDto = new UserDeleteRequestDto("password123!");
-//            String body = objectMapper.writeValueAsString(requestDto);
-//
-//            when(userService.deleteUser(any(User.class), any(UserDeleteRequestDto.class))).thenReturn(false);
-//
-//            // when
-//            ResultActions resultActions = mockMvc.perform(
-//                    delete("/users")
-//                            .header(JwtUtil.AUTHORIZATION_HEADER, "Bearer Token")
-//                            .content(body)
-//                            .contentType("application/json")
-//                            .with(csrf())
-//            );
-//
-//            // then
-//            resultActions.andExpect(status().isInternalServerError())
-//                    .andExpect(content().string("Failed to Delete ID"));
-//
-//            verify(userService, times(1)).deleteUser(any(User.class), any(UserDeleteRequestDto.class));
-//        }
-
-//        @Test
-//        @WithMockUser
-//        void 회원탈퇴_성공() throws Exception {
-//            String token = "JWT토큰";
-//            User user = new User("Rtan@sparta.com", "Rtan", "encodeddPassword", UserRole.USER);
-//            ReflectionTestUtils.setField(user, "id", 1L);
-//            UserDetailsImpl userDetails = new UserDetailsImpl(user);
-//            UserDeleteRequestDto requestDto = new UserDeleteRequestDto("password123!");
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            String body = objectMapper.writeValueAsString(requestDto);
-//
-//            when(userService.deleteUser(any(User.class), any(UserDeleteRequestDto.class))).thenReturn(true);
-//            Mockito.doNothing().when(tokenBlacklistService).addTokenToBlackList(anyString());
-//
-//            // when
-//            mockMvc.perform(
-//                            delete("/users")
-//                                    .header(JwtUtil.AUTHORIZATION_HEADER, token)
-//                                    .content(body)
-//                                    .contentType("application/json")
-//                                    .with(SecurityMockMvcRequestPostProcessors.user(userDetails))
-//                                    .with(csrf())
-//                    ).andExpect(status().isOk())
-//                    .andExpect(content().string("Delete ID Completed"));
-//
-//            verify(userService, times(1)).deleteUser(any(User.class), any(UserDeleteRequestDto.class));
-//            verify(tokenBlacklistService, times(1)).addTokenToBlackList(anyString());
-//        }
 
     }
 

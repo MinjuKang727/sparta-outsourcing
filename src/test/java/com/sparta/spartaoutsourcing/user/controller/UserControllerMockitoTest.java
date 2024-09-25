@@ -1,4 +1,4 @@
-package com.sparta.spartaoutsourcing.domian.user.controller;
+package com.sparta.spartaoutsourcing.user.controller;
 
 import com.sparta.spartaoutsourcing.auth.jwt.JwtUtil;
 import com.sparta.spartaoutsourcing.auth.token.TokenBlacklistService;

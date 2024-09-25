@@ -1,4 +1,4 @@
-package com.sparta.spartaoutsourcing.domian.user.service;
+package com.sparta.spartaoutsourcing.user.service;
 
 import com.sparta.spartaoutsourcing.user.repository.UserRepository;
 import com.sparta.spartaoutsourcing.user.service.KakaoService;
@@ -75,45 +75,5 @@ public class KakaoServiceTest {
         assertNotNull(result);
         assertEquals(kakaoAuthURL, result);
     }
-
-//    @Nested
-//    class KakaoLoginTest {
-//        @Test
-//        void 인가_코드로_토큰_요청_성공() {
-//            String code = "인가코드";
-//
-//            URI uri = UriComponentsBuilder
-//                    .fromUriString("https://kauth.kakao.com")
-//                    .path("/oauth/token")
-//                    .encode()
-//                    .build()
-//                    .toUri();
-//
-//            // HTTP Header 생성
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-//
-//            String accessToken = "엑세스 토큰";
-//
-//            // HTTP Body 생성
-//            MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-//            body.add("grant_type", "authorization_code");
-//            body.add("client_id", clientId);
-//            body.add("redirect_uri", "http://localhost:8080/users/login/kakao/callback");
-//            body.add("code", code);
-//
-//            RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity
-//                    .post(uri)  // body가 있으므로 post
-//                    .headers(headers)
-//                    .body(body);
-//
-//            ResponseEntity<String> response = restTemplate.exchange(
-//                    requestEntity,
-//                    String.class  // 받아 올 데이터 타입  >> 받을 데이터가 토큰 값
-//            );
-//
-//            given(restTemplate.exchange(any(RequestEntity.class), String.class)).willReturn(response);
-//        }
-//    }
 
 }
