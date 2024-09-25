@@ -7,13 +7,9 @@ import com.sparta.spartaoutsourcing.user.dto.request.KakaoUserInfoDto;
 import com.sparta.spartaoutsourcing.user.dto.response.UserResponseDto;
 import com.sparta.spartaoutsourcing.user.entity.User;
 import com.sparta.spartaoutsourcing.user.enums.UserRole;
-import com.sparta.spartaoutsourcing.user.exception.UserException;
 import com.sparta.spartaoutsourcing.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
@@ -23,10 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.lang.annotation.Documented;
 import java.net.URI;
 import java.util.UUID;
 
