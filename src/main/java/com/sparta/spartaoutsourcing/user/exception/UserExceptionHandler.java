@@ -13,6 +13,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -39,27 +41,41 @@ public class UserExceptionHandler {
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<String> MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException ex) throws JsonProcessingException {
-        String errorInfo = objectMapper.writeValueAsString(
-                ex.getBindingResult()
-                        .getFieldErrors()
-                        .stream()
-                        .collect(Collectors.toMap(
-                                fieldError -> fieldError.getField(),
-                                fieldError -> {
-                                    String rejectedValue = (String) fieldError.getRejectedValue();
+        Map<String, Object> errorMap = new HashMap<>();
+        Map<String, List<Map<String, Object>>> groupError = ex.getBindingResult()
+                                                            .getFieldErrors()
+                                                            .stream()
+                                                            .collect(Collectors.groupingBy(
+                                                                    fieldError -> fieldError.getField(),
+                                                                    Collectors.mapping(
+                                                                    fieldError -> {
+                                                                        String rejectedValue = (String) fieldError.getRejectedValue();
 
-                                    return Map.of(
-                                            "validation", fieldError.getDefaultMessage(),
-                                            "value", rejectedValue == null ? "null" : rejectedValue
-                                    );
-                                }
-                        ))
-        );
+                                                                        return Map.of(
+                                                                                "validation", fieldError.getDefaultMessage(),
+                                                                                "value", rejectedValue == null ? "null" : rejectedValue
+                                                                        );
+                                                                    }, Collectors.toList())
+                                                            ));
+
+        groupError.forEach((field, fieldErrors) -> {
+            if (fieldErrors.size() == 1) {
+                errorMap.put(field, fieldErrors.get(0));
+            } else {
+                Map<Integer, Map<String, Object>> errors = new HashMap<>();
+
+                for (int i = 0; i < fieldErrors.size(); i++) {
+                    errors.put(i, fieldErrors.get(i));
+                }
+                errorMap.put(field, errors);
+            }
+        });
+
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.valueOf("text/plain;charset=UTF-8"))
-                .body(errorInfo);
+                .body(objectMapper.writeValueAsString(errorMap));
     }
 
     @ExceptionHandler({NullPointerException.class})
