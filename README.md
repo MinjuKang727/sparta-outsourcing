@@ -2,7 +2,10 @@
 > 배달 어플리케이션 백엔드 개발  
 > 프로젝트 기간 : 2024.09.19 ~ 2024.09.25 (1주일)  
 
-- [Notion 팀 노션 페이지 링크](https://www.notion.so/ad655aaf895747309ab179ff34faa6cd?p=197d82ce485680c280c9d8da2a32577e&pm=s)
+<a href="https://youtu.be/Tq_kbbqmaSQ?si=OAcahrZ1rffJgVsM" alt="프로젝트 시연 영상"><img src="https://github.com/user-attachments/assets/f804aacf-852d-4722-b698-bc6844990233" width="30%"></a> 👈 이미지를 클릭하면 시연 영상 유튜브 페이지로 이동합니다.
+
+<br>
+
 ## 주요 기능
 - 회원가입 : 강민주
 - 로그인 : 강민주
@@ -12,6 +15,7 @@
 - 리뷰 : 김진근
 
 ## 화이팅 넘치조
+> [Notion 팀 노션 페이지 링크](https://www.notion.so/ad655aaf895747309ab179ff34faa6cd?p=197d82ce485680c280c9d8da2a32577e&pm=s)
 - 팀장 : 김진근
 - 팀원
   - 강민주
